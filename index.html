@@ -460,7 +460,7 @@
         
         .participant-pizza.vegetarian { background: #dcfce7; color: #166534; }
         .participant-pizza.standard { background: #fee2e2; color: #991b1b; }
-        .participant-pizza.both { background: #fef3c7; color: #92400e; }
+        .participant-pizza.none { background: #f3f4f6; color: #6b7280; }
         
         .participant-restrictions {
             font-size: 12px;
@@ -550,7 +550,7 @@
                 </section>
                 
                 <section>
-                    <h2>Pizza-Praferenz</h2>
+                    <h2>Pizza-Präferenz</h2>
                     <div class="radio-group" id="pizzaGroup">
                         <label class="radio-option" data-value="vegetarian">
                             <input type="radio" name="pizza" value="vegetarian">
@@ -562,10 +562,10 @@
                             <span class="radio-indicator"></span>
                             <span class="radio-label">Standard (auch Fleisch)</span>
                         </label>
-                        <label class="radio-option" data-value="both">
-                            <input type="radio" name="pizza" value="both">
+                        <label class="radio-option" data-value="none">
+                            <input type="radio" name="pizza" value="none">
                             <span class="radio-indicator"></span>
-                            <span class="radio-label">Beides OK</span>
+                            <span class="radio-label">Ich möchte nicht essen</span>
                         </label>
                     </div>
                 </section>
@@ -617,6 +617,52 @@
                 </section>
                 
                 <section>
+                    <h2>Snacks</h2>
+                    <div class="radio-group" id="snacksWantGroup">
+                        <label class="radio-option" data-value="yes">
+                            <input type="radio" name="wantSnacks" value="yes">
+                            <span class="radio-indicator"></span>
+                            <span class="radio-label">Ja, ich möchte Snacks</span>
+                        </label>
+                        <label class="radio-option" data-value="no">
+                            <input type="radio" name="wantSnacks" value="no">
+                            <span class="radio-indicator"></span>
+                            <span class="radio-label">Nein, danke</span>
+                        </label>
+                    </div>
+                    <div id="snackOptions" class="hidden" style="margin-top: 16px;">
+                        <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 12px;">Welche Snacks möchtest du?</p>
+                        <div class="checkbox-group" id="snackGroup">
+                            <label class="checkbox-option" data-value="chips">
+                                <input type="checkbox" name="snacks" value="chips">
+                                <span class="checkbox-indicator"></span>
+                                <span class="checkbox-label">Chips</span>
+                            </label>
+                            <label class="checkbox-option" data-value="nachos">
+                                <input type="checkbox" name="snacks" value="nachos">
+                                <span class="checkbox-indicator"></span>
+                                <span class="checkbox-label">Nachos</span>
+                            </label>
+                            <label class="checkbox-option" data-value="nuesse">
+                                <input type="checkbox" name="snacks" value="nuesse">
+                                <span class="checkbox-indicator"></span>
+                                <span class="checkbox-label">Nüsse</span>
+                            </label>
+                            <label class="checkbox-option" data-value="salzstangen">
+                                <input type="checkbox" name="snacks" value="salzstangen">
+                                <span class="checkbox-indicator"></span>
+                                <span class="checkbox-label">Salzstangen</span>
+                            </label>
+                            <label class="checkbox-option" data-value="gummibaerchen">
+                                <input type="checkbox" name="snacks" value="gummibaerchen">
+                                <span class="checkbox-indicator"></span>
+                                <span class="checkbox-label">Gummibärchen</span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                
+                <section>
                     <h2>Allergien / Einschränkungen (optional)</h2>
                     <div class="field">
                         <textarea id="restrictions" name="restrictions" placeholder="z.B. glutenfrei, laktosefrei, Nussallergie..."></textarea>
@@ -663,6 +709,14 @@
             </div>
             
             <section class="result-section">
+                <h2>Pizza-Einstellungen</h2>
+                <div class="field" style="max-width: 300px;">
+                    <label for="pizzaSize" style="font-size: 13px; color: var(--gray-600); margin-bottom: 8px; display: block;">Stücke pro Party-Pizza</label>
+                    <input type="number" id="pizzaSize" value="8" min="4" max="24" style="width: 100px; padding: 8px 12px; border: 1px solid var(--gray-300); font-size: 14px;" onchange="updatePizzaCalculation()">
+                </div>
+            </section>
+            
+            <section class="result-section">
                 <h2>Pizza-Übersicht</h2>
                 <div class="result-grid" id="pizzaResults">
                     <!-- Filled by JS -->
@@ -672,6 +726,13 @@
             <section class="result-section">
                 <h2>Getränke-Übersicht</h2>
                 <div class="drink-list" id="drinkResults">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+            
+            <section class="result-section">
+                <h2>Snacks-Übersicht</h2>
+                <div class="drink-list" id="snackResults">
                     <!-- Filled by JS -->
                 </div>
             </section>
@@ -746,13 +807,30 @@
         });
 
         function setupFormInteractions() {
-            // Radio buttons
+            // Radio buttons - scope selection clearing to parent group
             document.querySelectorAll('.radio-option').forEach(option => {
                 option.addEventListener('click', (e) => {
                     e.preventDefault();
-                    document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+                    const group = option.parentElement;
+                    group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
                     option.classList.add('selected');
                     option.querySelector('input').checked = true;
+                    
+                    // Handle snacks show/hide
+                    const input = option.querySelector('input');
+                    if (input.name === 'wantSnacks') {
+                        const snackOptions = document.getElementById('snackOptions');
+                        if (input.value === 'yes') {
+                            snackOptions.classList.remove('hidden');
+                        } else {
+                            snackOptions.classList.add('hidden');
+                            // Clear snack selections when "no" is chosen
+                            document.querySelectorAll('#snackGroup .checkbox-option').forEach(o => {
+                                o.classList.remove('selected');
+                                o.querySelector('input').checked = false;
+                            });
+                        }
+                    }
                 });
             });
             
@@ -769,7 +847,7 @@
 
         function prefillForm(data) {
             // Pizza
-            const pizzaOption = document.querySelector(`.radio-option[data-value="${data.pizza}"]`);
+            const pizzaOption = document.querySelector(`#pizzaGroup .radio-option[data-value="${data.pizza}"]`);
             if (pizzaOption) {
                 pizzaOption.classList.add('selected');
                 pizzaOption.querySelector('input').checked = true;
@@ -777,12 +855,35 @@
             
             // Drinks
             data.drinks.forEach(drink => {
-                const drinkOption = document.querySelector(`.checkbox-option[data-value="${drink}"]`);
+                const drinkOption = document.querySelector(`#drinkGroup .checkbox-option[data-value="${drink}"]`);
                 if (drinkOption) {
                     drinkOption.classList.add('selected');
                     drinkOption.querySelector('input').checked = true;
                 }
             });
+            
+            // Snacks
+            if (data.snacks && data.snacks.length > 0) {
+                const snacksYes = document.querySelector('#snacksWantGroup .radio-option[data-value="yes"]');
+                if (snacksYes) {
+                    snacksYes.classList.add('selected');
+                    snacksYes.querySelector('input').checked = true;
+                }
+                document.getElementById('snackOptions').classList.remove('hidden');
+                data.snacks.forEach(snack => {
+                    const snackOption = document.querySelector(`#snackGroup .checkbox-option[data-value="${snack}"]`);
+                    if (snackOption) {
+                        snackOption.classList.add('selected');
+                        snackOption.querySelector('input').checked = true;
+                    }
+                });
+            } else {
+                const snacksNo = document.querySelector('#snacksWantGroup .radio-option[data-value="no"]');
+                if (snacksNo) {
+                    snacksNo.classList.add('selected');
+                    snacksNo.querySelector('input').checked = true;
+                }
+            }
             
             // Restrictions
             if (data.restrictions) {
@@ -842,6 +943,8 @@
             const name = document.getElementById('name').value.trim();
             const pizzaInput = document.querySelector('input[name="pizza"]:checked');
             const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
+            const wantSnacksInput = document.querySelector('input[name="wantSnacks"]:checked');
+            const snackInputs = document.querySelectorAll('input[name="snacks"]:checked');
             const restrictions = document.getElementById('restrictions').value.trim();
             
             if (!name) {
@@ -859,6 +962,16 @@
                 return;
             }
             
+            if (!wantSnacksInput) {
+                showMessage('Bitte gib an, ob du Snacks möchtest.', 'error');
+                return;
+            }
+            
+            if (wantSnacksInput.value === 'yes' && snackInputs.length === 0) {
+                showMessage('Bitte wähle mindestens einen Snack.', 'error');
+                return;
+            }
+            
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'Speichern...';
@@ -870,6 +983,7 @@
                     name,
                     pizza: pizzaInput.value,
                     drinks: Array.from(drinkInputs).map(i => i.value),
+                    snacks: wantSnacksInput.value === 'yes' ? Array.from(snackInputs).map(i => i.value) : [],
                     restrictions: restrictions || null,
                     timestamp: new Date().toISOString()
                 };
@@ -906,18 +1020,20 @@
         }
 
         // Admin calculations
-        function calculatePizzas() {
-            const counts = { vegetarian: 0, standard: 0, both: 0 };
+        function calculatePizzas(slicesPerPizza = null) {
+            const counts = { vegetarian: 0, standard: 0, none: 0 };
             responses.forEach(r => counts[r.pizza]++);
             
-            // People who said "both" split evenly
-            const vegTotal = counts.vegetarian + counts.both * 0.5;
-            const stdTotal = counts.standard + counts.both * 0.5;
+            // Only count people who want to eat
+            const eaters = counts.vegetarian + counts.standard;
             
-            const totalSlices = responses.length * CONFIG.slicesPerPerson;
-            const totalPizzas = Math.ceil(totalSlices / CONFIG.slicesPerPizza * (1 + CONFIG.bufferPercent));
+            // Get pizza size from input or use default
+            const pizzaSize = slicesPerPizza || (document.getElementById('pizzaSize')?.value || CONFIG.slicesPerPizza);
             
-            const vegRatio = responses.length > 0 ? vegTotal / responses.length : 0.5;
+            const totalSlices = eaters * CONFIG.slicesPerPerson;
+            const totalPizzas = Math.ceil(totalSlices / pizzaSize * (1 + CONFIG.bufferPercent));
+            
+            const vegRatio = eaters > 0 ? counts.vegetarian / eaters : 0.5;
             const vegPizzas = Math.ceil(totalPizzas * vegRatio);
             const stdPizzas = totalPizzas - vegPizzas;
             
@@ -925,8 +1041,15 @@
                 counts,
                 vegPizzas,
                 stdPizzas,
-                totalPizzas
+                totalPizzas,
+                eaters
             };
+        }
+        
+        function updatePizzaCalculation() {
+            if (typeof renderAdmin === 'function') {
+                renderAdmin();
+            }
         }
 
         function calculateDrinks() {
@@ -963,10 +1086,36 @@
                 totalLiters: Math.ceil(Object.values(drinkLiters).reduce((a, b) => a + b, 0))
             };
         }
+        
+        const SNACKS = {
+            chips: 'Chips',
+            nachos: 'Nachos',
+            nuesse: 'Nüsse',
+            salzstangen: 'Salzstangen',
+            gummibaerchen: 'Gummibärchen'
+        };
+        
+        function calculateSnacks() {
+            const counts = {};
+            Object.keys(SNACKS).forEach(s => counts[s] = 0);
+            let wantSnacks = 0;
+            
+            responses.forEach(r => {
+                if (r.snacks && r.snacks.length > 0) {
+                    wantSnacks++;
+                    r.snacks.forEach(s => {
+                        if (counts[s] !== undefined) counts[s]++;
+                    });
+                }
+            });
+            
+            return { counts, wantSnacks };
+        }
 
         function renderAdmin() {
             const pizza = calculatePizzas();
             const drinks = calculateDrinks();
+            const snacks = calculateSnacks();
             
             // Stats
             document.getElementById('adminTotal').textContent = responses.length;
@@ -978,13 +1127,20 @@
                 <div class="result-card">
                     <div class="result-card-label">Vegetarisch</div>
                     <div class="result-card-value">${pizza.vegPizzas} Pizzen</div>
-                    <div class="result-card-detail">${pizza.counts.vegetarian} strikt + ${pizza.counts.both} flexibel</div>
+                    <div class="result-card-detail">${pizza.counts.vegetarian} Personen</div>
                 </div>
                 <div class="result-card">
                     <div class="result-card-label">Standard</div>
                     <div class="result-card-value">${pizza.stdPizzas} Pizzen</div>
-                    <div class="result-card-detail">${pizza.counts.standard} strikt + ${pizza.counts.both} flexibel</div>
+                    <div class="result-card-detail">${pizza.counts.standard} Personen</div>
                 </div>
+                ${pizza.counts.none > 0 ? `
+                <div class="result-card">
+                    <div class="result-card-label">Isst nicht</div>
+                    <div class="result-card-value">-</div>
+                    <div class="result-card-detail">${pizza.counts.none} Personen</div>
+                </div>
+                ` : ''}
             `;
             document.getElementById('pizzaResults').innerHTML = pizzaHtml;
             
@@ -1004,20 +1160,37 @@
             `).join('') || '<p style="color: var(--gray-500)">Keine Daten</p>';
             document.getElementById('drinkResults').innerHTML = drinksHtml;
             
+            // Snack results - sorted by count
+            const sortedSnacks = Object.entries(snacks.counts)
+                .sort((a, b) => b[1] - a[1])
+                .filter(([_, count]) => count > 0);
+            
+            const snacksHtml = sortedSnacks.length > 0 ? sortedSnacks.map(([snack, count]) => `
+                <div class="drink-item">
+                    <span class="drink-name">${SNACKS[snack]}</span>
+                    <span class="drink-stats">
+                        <span class="drink-count">${count}x gewünscht</span>
+                    </span>
+                </div>
+            `).join('') : `<p style="color: var(--gray-500)">${snacks.wantSnacks} von ${responses.length} möchten Snacks</p>`;
+            document.getElementById('snackResults').innerHTML = snacksHtml;
+            
             // Participants
             document.getElementById('participantsTitle').textContent = `Teilnehmer (${responses.length})`;
             
             const sortedResponses = [...responses].sort((a, b) => a.name.localeCompare(b.name));
             const participantsHtml = sortedResponses.map(r => {
-                const pizzaClass = r.pizza === 'vegetarian' ? 'vegetarian' : r.pizza === 'standard' ? 'standard' : 'both';
-                const pizzaLabel = r.pizza === 'vegetarian' ? 'Vegetarisch' : r.pizza === 'standard' ? 'Standard' : 'Beides OK';
+                const pizzaClass = r.pizza === 'vegetarian' ? 'vegetarian' : r.pizza === 'standard' ? 'standard' : 'none';
+                const pizzaLabel = r.pizza === 'vegetarian' ? 'Vegetarisch' : r.pizza === 'standard' ? 'Standard' : 'Isst nicht';
                 const drinksLabel = r.drinks.map(d => DRINKS[d]?.name || d).join(', ');
+                const snacksLabel = r.snacks && r.snacks.length > 0 ? r.snacks.map(s => SNACKS[s] || s).join(', ') : '';
                 
                 return `
                     <div class="participant-item">
                         <span class="participant-name">${r.name}</span>
                         <span class="participant-pizza ${pizzaClass}">${pizzaLabel}</span>
                         <span style="font-size: 12px; color: var(--gray-500)">${drinksLabel}</span>
+                        ${snacksLabel ? `<span style="font-size: 12px; color: var(--gray-500)">Snacks: ${snacksLabel}</span>` : ''}
                         ${r.restrictions ? `<span class="participant-restrictions">Hinweis: ${r.restrictions}</span>` : ''}
                     </div>
                 `;
