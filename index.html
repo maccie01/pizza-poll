@@ -695,7 +695,8 @@
         function setupFormInteractions() {
             // Radio buttons
             document.querySelectorAll('.radio-option').forEach(option => {
-                option.addEventListener('click', () => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
                     document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
                     option.classList.add('selected');
                     option.querySelector('input').checked = true;
@@ -704,7 +705,8 @@
             
             // Checkboxes
             document.querySelectorAll('.checkbox-option').forEach(option => {
-                option.addEventListener('click', () => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
                     option.classList.toggle('selected');
                     const input = option.querySelector('input');
                     input.checked = !input.checked;
