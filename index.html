@@ -469,6 +469,38 @@
             margin-top: -4px;
         }
         
+        /* Thank You View */
+        .thank-you-content {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .thank-you-icon {
+            color: var(--success);
+            margin-bottom: 24px;
+        }
+        
+        .thank-you-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: none;
+            letter-spacing: normal;
+            color: var(--black);
+        }
+        
+        .thank-you-text {
+            font-size: 16px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+        
+        .thank-you-name {
+            font-size: 14px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+        
         .hidden { display: none !important; }
         
         /* Print Styles */
@@ -494,7 +526,7 @@
     <div class="container">
         <header>
             <h1>Pizza und Getränke</h1>
-            <p class="description">Get-Together Praferenzabfrage. Bitte gib deine Vorlieben an, damit wir die richtige Menge bestellen konnen.</p>
+            <p class="description">Get-Together Präferenzabfrage. Bitte gib deine Vorlieben an, damit wir die richtige Menge bestellen können.</p>
             <div class="info-box">
                 <strong>Richtwerte pro Person:</strong>
                 Pizza: 2-3 Stücke | Getränke: ca. 1.5 Liter
@@ -585,7 +617,7 @@
                 </section>
                 
                 <section>
-                    <h2>Allergien / Einschrankungen (optional)</h2>
+                    <h2>Allergien / Einschränkungen (optional)</h2>
                     <div class="field">
                         <textarea id="restrictions" name="restrictions" placeholder="z.B. glutenfrei, laktosefrei, Nussallergie..."></textarea>
                     </div>
@@ -593,6 +625,21 @@
                 
                 <button type="submit" class="btn" id="submitBtn">Absenden</button>
             </form>
+        </div>
+        
+        <!-- Thank You View -->
+        <div id="thankYouView" class="hidden">
+            <div class="thank-you-content">
+                <div class="thank-you-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <h2 class="thank-you-title">Danke für deine Anmeldung!</h2>
+                <p class="thank-you-text">Deine Pizza- und Getränkewünsche wurden gespeichert.</p>
+                <p class="thank-you-name" id="thankYouName"></p>
+            </div>
         </div>
         
         <!-- Admin View -->
@@ -680,7 +727,13 @@
                 document.querySelector('header').innerHTML = '<h1>Pizza und Getränke - Admin</h1>';
                 renderAdmin();
             } else {
-                if (existingName) {
+                const hasVoted = localStorage.getItem('pizzaPollVoted') === 'true';
+                if (hasVoted && existingName) {
+                    // Show thank you view for returning voters
+                    document.getElementById('userView').classList.add('hidden');
+                    document.getElementById('thankYouView').classList.remove('hidden');
+                    document.getElementById('thankYouName').textContent = `Angemeldet als: ${existingName}`;
+                } else if (existingName) {
                     document.getElementById('name').value = existingName;
                     const existing = responses.find(r => r.name.toLowerCase() === existingName.toLowerCase());
                     if (existing) {
@@ -831,10 +884,12 @@
                 await saveResponses();
                 
                 localStorage.setItem('pizzaPollName', name);
+                localStorage.setItem('pizzaPollVoted', 'true');
                 
-                showMessage('Deine Angaben wurden gespeichert.', 'success');
-                updateMeta();
-                submitBtn.textContent = 'Aktualisieren';
+                // Show thank you view
+                document.getElementById('userView').classList.add('hidden');
+                document.getElementById('thankYouView').classList.remove('hidden');
+                document.getElementById('thankYouName').textContent = `Angemeldet als: ${name}`;
             } catch (err) {
                 showMessage('Fehler beim Speichern. Bitte erneut versuchen.', 'error');
             }
