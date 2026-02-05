@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pizza und Getranke - Abstimmung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-50: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            --success: #018a16;
+            --error: #d5001c;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { font-size: 16px; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            min-height: 100vh;
+            min-height: 100dvh;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 40px 16px;
+        }
+        
+        header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        
+        .description {
+            font-size: 15px;
+            color: var(--gray-600);
+            margin-bottom: 16px;
+        }
+        
+        .info-box {
+            background: var(--gray-50);
+            border-left: 3px solid var(--black);
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+        
+        .info-box strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .meta-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+        
+        section { margin-bottom: 32px; }
+        
+        h2 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            margin-bottom: 16px;
+        }
+        
+        .message {
+            padding: 14px 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 3px solid;
+        }
+        
+        .message.success {
+            background: #f0fdf4;
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .message.error {
+            background: #fef2f2;
+            border-color: var(--error);
+            color: var(--error);
+        }
+        
+        .field {
+            margin-bottom: 24px;
+        }
+        
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+        
+        .field input[type="text"],
+        .field textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 0;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        
+        .field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .field input[type="text"]:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--black);
+            box-shadow: 0 0 0 1px var(--black);
+        }
+        
+        .field input[type="text"]::placeholder,
+        .field textarea::placeholder {
+            color: var(--gray-400);
+        }
+        
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        
+        .radio-option:hover {
+            background: var(--gray-50);
+        }
+        
+        .radio-option.selected {
+            border-color: var(--black);
+            background: var(--gray-100);
+        }
+        
+        .radio-option input {
+            display: none;
+        }
+        
+        .radio-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-400);
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .radio-option.selected .radio-indicator {
+            border-color: var(--black);
+        }
+        
+        .radio-option.selected .radio-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: var(--black);
+            border-radius: 50%;
+        }
+        
+        .radio-label {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        @media (max-width: 400px) {
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        
+        .checkbox-option:hover {
+            background: var(--gray-50);
+        }
+        
+        .checkbox-option.selected {
+            border-color: var(--black);
+            background: var(--gray-100);
+        }
+        
+        .checkbox-option input {
+            display: none;
+        }
+        
+        .checkbox-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-400);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkbox-option.selected .checkbox-indicator {
+            border-color: var(--black);
+            background: var(--black);
+        }
+        
+        .checkbox-option.selected .checkbox-indicator::after {
+            content: '';
+            width: 6px;
+            height: 10px;
+            border: 2px solid var(--white);
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg) translateY(-1px);
+        }
+        
+        .checkbox-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+        
+        .btn:hover { background: var(--gray-800); }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background: var(--gray-300); cursor: not-allowed; transform: none; }
+        
+        /* Admin View */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .admin-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            padding: 16px 20px;
+            background: var(--gray-100);
+            min-width: 100px;
+        }
+        
+        .stat-box.highlight {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .btn-outline {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--black);
+            padding: 12px 20px;
+            width: auto;
+        }
+        
+        .btn-outline:hover {
+            background: var(--gray-100);
+        }
+        
+        /* Result Cards */
+        .result-section {
+            margin-bottom: 32px;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .result-card {
+            padding: 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .result-card-label {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        
+        .result-card-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .result-card-detail {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        
+        /* Drink Breakdown */
+        .drink-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .drink-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .drink-name {
+            font-weight: 500;
+        }
+        
+        .drink-stats {
+            text-align: right;
+        }
+        
+        .drink-count {
+            font-weight: 600;
+        }
+        
+        .drink-liters {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+        
+        /* Participants Table */
+        .participants-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .participant-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 16px;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            align-items: center;
+        }
+        
+        .participant-name {
+            font-weight: 500;
+        }
+        
+        .participant-pizza {
+            font-size: 13px;
+            padding: 4px 8px;
+            background: var(--gray-200);
+        }
+        
+        .participant-pizza.vegetarian { background: #dcfce7; color: #166534; }
+        .participant-pizza.standard { background: #fee2e2; color: #991b1b; }
+        .participant-pizza.both { background: #fef3c7; color: #92400e; }
+        
+        .participant-restrictions {
+            font-size: 12px;
+            color: var(--gray-500);
+            grid-column: 1 / -1;
+            margin-top: -4px;
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Print Styles */
+        @media print {
+            @page { margin: 10mm; }
+            body { background: white; }
+            .container { padding: 10px; max-width: none; }
+            .admin-header button { display: none; }
+            .btn { display: none; }
+            header { display: none; }
+        }
+        
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container { padding: 24px 12px; }
+            h1 { font-size: 22px; }
+            .admin-stats { width: 100%; }
+            .stat-box { flex: 1; min-width: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pizza und Getranke</h1>
+            <p class="description">Get-Together Praferenzabfrage. Bitte gib deine Vorlieben an, damit wir die richtige Menge bestellen konnen.</p>
+            <div class="info-box">
+                <strong>Richtwerte pro Person:</strong>
+                Pizza: 2-3 Stucke | Getranke: ca. 1.5 Liter
+            </div>
+        </header>
+        
+        <div class="meta-bar">
+            <span id="responseCount">Lade...</span>
+        </div>
+        
+        <div id="message" class="message hidden"></div>
+        
+        <!-- User View -->
+        <div id="userView">
+            <form id="pollForm">
+                <section>
+                    <h2>Dein Name</h2>
+                    <div class="field">
+                        <input type="text" id="name" name="name" placeholder="Vor- und Nachname" required autocomplete="name">
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Pizza-Praferenz</h2>
+                    <div class="radio-group" id="pizzaGroup">
+                        <label class="radio-option" data-value="vegetarian">
+                            <input type="radio" name="pizza" value="vegetarian">
+                            <span class="radio-indicator"></span>
+                            <span class="radio-label">Vegetarisch</span>
+                        </label>
+                        <label class="radio-option" data-value="standard">
+                            <input type="radio" name="pizza" value="standard">
+                            <span class="radio-indicator"></span>
+                            <span class="radio-label">Standard (auch Fleisch)</span>
+                        </label>
+                        <label class="radio-option" data-value="both">
+                            <input type="radio" name="pizza" value="both">
+                            <span class="radio-indicator"></span>
+                            <span class="radio-label">Beides OK</span>
+                        </label>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Getranke (Mehrfachauswahl)</h2>
+                    <div class="checkbox-group" id="drinkGroup">
+                        <label class="checkbox-option" data-value="cola">
+                            <input type="checkbox" name="drinks" value="cola">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Cola</span>
+                        </label>
+                        <label class="checkbox-option" data-value="fanta">
+                            <input type="checkbox" name="drinks" value="fanta">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Fanta</span>
+                        </label>
+                        <label class="checkbox-option" data-value="sprite">
+                            <input type="checkbox" name="drinks" value="sprite">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Sprite</span>
+                        </label>
+                        <label class="checkbox-option" data-value="wasser">
+                            <input type="checkbox" name="drinks" value="wasser">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Wasser</span>
+                        </label>
+                        <label class="checkbox-option" data-value="apfelschorle">
+                            <input type="checkbox" name="drinks" value="apfelschorle">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Apfelschorle</span>
+                        </label>
+                        <label class="checkbox-option" data-value="bier">
+                            <input type="checkbox" name="drinks" value="bier">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Bier</span>
+                        </label>
+                        <label class="checkbox-option" data-value="spezi">
+                            <input type="checkbox" name="drinks" value="spezi">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Spezi</span>
+                        </label>
+                        <label class="checkbox-option" data-value="eistee">
+                            <input type="checkbox" name="drinks" value="eistee">
+                            <span class="checkbox-indicator"></span>
+                            <span class="checkbox-label">Eistee</span>
+                        </label>
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Allergien / Einschrankungen (optional)</h2>
+                    <div class="field">
+                        <textarea id="restrictions" name="restrictions" placeholder="z.B. glutenfrei, laktosefrei, Nussallergie..."></textarea>
+                    </div>
+                </section>
+                
+                <button type="submit" class="btn" id="submitBtn">Absenden</button>
+            </form>
+        </div>
+        
+        <!-- Admin View -->
+        <div id="adminView" class="hidden">
+            <div class="admin-header">
+                <div class="admin-stats">
+                    <div class="stat-box highlight">
+                        <div class="stat-value" id="adminTotal">0</div>
+                        <div class="stat-label">Teilnehmer</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="adminPizzaCount">0</div>
+                        <div class="stat-label">Pizzen</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="adminDrinkLiters">0L</div>
+                        <div class="stat-label">Getranke</div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" onclick="window.print()">Drucken</button>
+            </div>
+            
+            <section class="result-section">
+                <h2>Pizza-Ubersicht</h2>
+                <div class="result-grid" id="pizzaResults">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+            
+            <section class="result-section">
+                <h2>Getranke-Ubersicht</h2>
+                <div class="drink-list" id="drinkResults">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+            
+            <section>
+                <h2 id="participantsTitle">Teilnehmer (0)</h2>
+                <div class="participants-list" id="participantsList">
+                    <!-- Filled by JS -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - UPDATE BIN_ID AFTER CREATING NEW BIN
+        const CONFIG = {
+            binId: 'PLACEHOLDER_BIN_ID', // TODO: Replace with actual bin ID
+            apiKey: '$2a$10$b9ndxCm6OP1TyFLhoe2jiu1C2Jp2p1Id43v18YsvM3xTwM8bePUsK',
+            expectedGuests: 30,
+            // Research-based calculations
+            slicesPerPerson: 3,
+            slicesPerPizza: 8,
+            bufferPercent: 0.15,
+            litersPerPerson: 1.5
+        };
+        
+        const DRINKS = {
+            cola: { name: 'Cola', litersPerSelection: 0.5 },
+            fanta: { name: 'Fanta', litersPerSelection: 0.4 },
+            sprite: { name: 'Sprite', litersPerSelection: 0.4 },
+            wasser: { name: 'Wasser', litersPerSelection: 0.5 },
+            apfelschorle: { name: 'Apfelschorle', litersPerSelection: 0.4 },
+            bier: { name: 'Bier', litersPerSelection: 0.5 },
+            spezi: { name: 'Spezi', litersPerSelection: 0.3 },
+            eistee: { name: 'Eistee', litersPerSelection: 0.3 }
+        };
+
+        // State
+        let responses = [];
+        const isAdmin = new URLSearchParams(window.location.search).has('admin');
+        const existingName = localStorage.getItem('pizzaPollName') || '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            setupFormInteractions();
+            await loadResponses();
+            
+            if (isAdmin) {
+                document.getElementById('userView').classList.add('hidden');
+                document.getElementById('adminView').classList.remove('hidden');
+                document.querySelector('header').innerHTML = '<h1>Pizza und Getranke - Admin</h1>';
+                renderAdmin();
+            } else {
+                if (existingName) {
+                    document.getElementById('name').value = existingName;
+                    const existing = responses.find(r => r.name.toLowerCase() === existingName.toLowerCase());
+                    if (existing) {
+                        prefillForm(existing);
+                        document.getElementById('submitBtn').textContent = 'Aktualisieren';
+                    }
+                }
+            }
+            updateMeta();
+        });
+
+        function setupFormInteractions() {
+            // Radio buttons
+            document.querySelectorAll('.radio-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    option.querySelector('input').checked = true;
+                });
+            });
+            
+            // Checkboxes
+            document.querySelectorAll('.checkbox-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    option.classList.toggle('selected');
+                    const input = option.querySelector('input');
+                    input.checked = !input.checked;
+                });
+            });
+        }
+
+        function prefillForm(data) {
+            // Pizza
+            const pizzaOption = document.querySelector(`.radio-option[data-value="${data.pizza}"]`);
+            if (pizzaOption) {
+                pizzaOption.classList.add('selected');
+                pizzaOption.querySelector('input').checked = true;
+            }
+            
+            // Drinks
+            data.drinks.forEach(drink => {
+                const drinkOption = document.querySelector(`.checkbox-option[data-value="${drink}"]`);
+                if (drinkOption) {
+                    drinkOption.classList.add('selected');
+                    drinkOption.querySelector('input').checked = true;
+                }
+            });
+            
+            // Restrictions
+            if (data.restrictions) {
+                document.getElementById('restrictions').value = data.restrictions;
+            }
+        }
+
+        async function loadResponses() {
+            if (CONFIG.binId === 'PLACEHOLDER_BIN_ID') {
+                console.warn('No bin ID configured - using localStorage fallback');
+                responses = JSON.parse(localStorage.getItem('pizzaPollResponses') || '[]');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.binId}/latest`, {
+                    headers: { 'X-Access-Key': CONFIG.apiKey }
+                });
+                const data = await res.json();
+                responses = data.record?.responses || [];
+            } catch (e) {
+                console.error('Failed to load responses:', e);
+                responses = [];
+            }
+        }
+
+        async function saveResponses() {
+            if (CONFIG.binId === 'PLACEHOLDER_BIN_ID') {
+                localStorage.setItem('pizzaPollResponses', JSON.stringify(responses));
+                return;
+            }
+            
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Access-Key': CONFIG.apiKey
+                    },
+                    body: JSON.stringify({ responses, updated: new Date().toISOString() })
+                });
+                if (!res.ok) throw new Error('Save failed');
+            } catch (e) {
+                console.error('Failed to save responses:', e);
+                throw e;
+            }
+        }
+
+        function updateMeta() {
+            document.getElementById('responseCount').textContent = `${responses.length} Anmeldungen`;
+        }
+
+        // Form submission
+        document.getElementById('pollForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const pizzaInput = document.querySelector('input[name="pizza"]:checked');
+            const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
+            const restrictions = document.getElementById('restrictions').value.trim();
+            
+            if (!name) {
+                showMessage('Bitte gib deinen Namen ein.', 'error');
+                return;
+            }
+            
+            if (!pizzaInput) {
+                showMessage('Bitte wahle eine Pizza-Praferenz.', 'error');
+                return;
+            }
+            
+            if (drinkInputs.length === 0) {
+                showMessage('Bitte wahle mindestens ein Getrank.', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Speichern...';
+            
+            try {
+                await loadResponses();
+                
+                const responseData = {
+                    name,
+                    pizza: pizzaInput.value,
+                    drinks: Array.from(drinkInputs).map(i => i.value),
+                    restrictions: restrictions || null,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const existingIdx = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+                if (existingIdx >= 0) {
+                    responses[existingIdx] = responseData;
+                } else {
+                    responses.push(responseData);
+                }
+                
+                await saveResponses();
+                
+                localStorage.setItem('pizzaPollName', name);
+                
+                showMessage('Deine Angaben wurden gespeichert.', 'success');
+                updateMeta();
+                submitBtn.textContent = 'Aktualisieren';
+            } catch (err) {
+                showMessage('Fehler beim Speichern. Bitte erneut versuchen.', 'error');
+            }
+            
+            submitBtn.disabled = false;
+        });
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+
+        // Admin calculations
+        function calculatePizzas() {
+            const counts = { vegetarian: 0, standard: 0, both: 0 };
+            responses.forEach(r => counts[r.pizza]++);
+            
+            // People who said "both" split evenly
+            const vegTotal = counts.vegetarian + counts.both * 0.5;
+            const stdTotal = counts.standard + counts.both * 0.5;
+            
+            const totalSlices = responses.length * CONFIG.slicesPerPerson;
+            const totalPizzas = Math.ceil(totalSlices / CONFIG.slicesPerPizza * (1 + CONFIG.bufferPercent));
+            
+            const vegRatio = responses.length > 0 ? vegTotal / responses.length : 0.5;
+            const vegPizzas = Math.ceil(totalPizzas * vegRatio);
+            const stdPizzas = totalPizzas - vegPizzas;
+            
+            return {
+                counts,
+                vegPizzas,
+                stdPizzas,
+                totalPizzas
+            };
+        }
+
+        function calculateDrinks() {
+            const drinkCounts = {};
+            Object.keys(DRINKS).forEach(d => drinkCounts[d] = 0);
+            
+            responses.forEach(r => {
+                r.drinks.forEach(d => {
+                    if (drinkCounts[d] !== undefined) drinkCounts[d]++;
+                });
+            });
+            
+            // Calculate liters based on selections
+            const drinkLiters = {};
+            let totalLiters = 0;
+            
+            Object.entries(drinkCounts).forEach(([drink, count]) => {
+                const liters = count * DRINKS[drink].litersPerSelection;
+                drinkLiters[drink] = Math.ceil(liters);
+                totalLiters += liters;
+            });
+            
+            // Ensure minimum per person
+            const minTotal = responses.length * CONFIG.litersPerPerson;
+            const multiplier = totalLiters > 0 && totalLiters < minTotal ? minTotal / totalLiters : 1;
+            
+            Object.keys(drinkLiters).forEach(d => {
+                drinkLiters[d] = Math.ceil(drinkLiters[d] * multiplier);
+            });
+            
+            return {
+                counts: drinkCounts,
+                liters: drinkLiters,
+                totalLiters: Math.ceil(Object.values(drinkLiters).reduce((a, b) => a + b, 0))
+            };
+        }
+
+        function renderAdmin() {
+            const pizza = calculatePizzas();
+            const drinks = calculateDrinks();
+            
+            // Stats
+            document.getElementById('adminTotal').textContent = responses.length;
+            document.getElementById('adminPizzaCount').textContent = pizza.totalPizzas;
+            document.getElementById('adminDrinkLiters').textContent = drinks.totalLiters + 'L';
+            
+            // Pizza results
+            const pizzaHtml = `
+                <div class="result-card">
+                    <div class="result-card-label">Vegetarisch</div>
+                    <div class="result-card-value">${pizza.vegPizzas} Pizzen</div>
+                    <div class="result-card-detail">${pizza.counts.vegetarian} strikt + ${pizza.counts.both} flexibel</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-card-label">Standard</div>
+                    <div class="result-card-value">${pizza.stdPizzas} Pizzen</div>
+                    <div class="result-card-detail">${pizza.counts.standard} strikt + ${pizza.counts.both} flexibel</div>
+                </div>
+            `;
+            document.getElementById('pizzaResults').innerHTML = pizzaHtml;
+            
+            // Drink results - sorted by count
+            const sortedDrinks = Object.entries(drinks.counts)
+                .sort((a, b) => b[1] - a[1])
+                .filter(([_, count]) => count > 0);
+            
+            const drinksHtml = sortedDrinks.map(([drink, count]) => `
+                <div class="drink-item">
+                    <span class="drink-name">${DRINKS[drink].name}</span>
+                    <span class="drink-stats">
+                        <span class="drink-count">${count}x</span>
+                        <span class="drink-liters">ca. ${drinks.liters[drink]}L</span>
+                    </span>
+                </div>
+            `).join('') || '<p style="color: var(--gray-500)">Keine Daten</p>';
+            document.getElementById('drinkResults').innerHTML = drinksHtml;
+            
+            // Participants
+            document.getElementById('participantsTitle').textContent = `Teilnehmer (${responses.length})`;
+            
+            const sortedResponses = [...responses].sort((a, b) => a.name.localeCompare(b.name));
+            const participantsHtml = sortedResponses.map(r => {
+                const pizzaClass = r.pizza === 'vegetarian' ? 'vegetarian' : r.pizza === 'standard' ? 'standard' : 'both';
+                const pizzaLabel = r.pizza === 'vegetarian' ? 'Vegetarisch' : r.pizza === 'standard' ? 'Standard' : 'Beides OK';
+                const drinksLabel = r.drinks.map(d => DRINKS[d]?.name || d).join(', ');
+                
+                return `
+                    <div class="participant-item">
+                        <span class="participant-name">${r.name}</span>
+                        <span class="participant-pizza ${pizzaClass}">${pizzaLabel}</span>
+                        <span style="font-size: 12px; color: var(--gray-500)">${drinksLabel}</span>
+                        ${r.restrictions ? `<span class="participant-restrictions">Hinweis: ${r.restrictions}</span>` : ''}
+                    </div>
+                `;
+            }).join('') || '<p style="color: var(--gray-500)">Noch keine Anmeldungen</p>';
+            document.getElementById('participantsList').innerHTML = participantsHtml;
+        }
+    </script>
+</body>
+</html>
