@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pizza und Getranke - Abstimmung</title>
+    <title>Pizza und Getränke - Abstimmung</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -493,11 +493,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>Pizza und Getranke</h1>
+            <h1>Pizza und Getränke</h1>
             <p class="description">Get-Together Praferenzabfrage. Bitte gib deine Vorlieben an, damit wir die richtige Menge bestellen konnen.</p>
             <div class="info-box">
                 <strong>Richtwerte pro Person:</strong>
-                Pizza: 2-3 Stucke | Getranke: ca. 1.5 Liter
+                Pizza: 2-3 Stücke | Getränke: ca. 1.5 Liter
             </div>
         </header>
         
@@ -539,7 +539,7 @@
                 </section>
                 
                 <section>
-                    <h2>Getranke (Mehrfachauswahl)</h2>
+                    <h2>Getränke (Mehrfachauswahl)</h2>
                     <div class="checkbox-group" id="drinkGroup">
                         <label class="checkbox-option" data-value="cola">
                             <input type="checkbox" name="drinks" value="cola">
@@ -609,21 +609,21 @@
                     </div>
                     <div class="stat-box">
                         <div class="stat-value" id="adminDrinkLiters">0L</div>
-                        <div class="stat-label">Getranke</div>
+                        <div class="stat-label">Getränke</div>
                     </div>
                 </div>
                 <button class="btn btn-outline" onclick="window.print()">Drucken</button>
             </div>
             
             <section class="result-section">
-                <h2>Pizza-Ubersicht</h2>
+                <h2>Pizza-Übersicht</h2>
                 <div class="result-grid" id="pizzaResults">
                     <!-- Filled by JS -->
                 </div>
             </section>
             
             <section class="result-section">
-                <h2>Getranke-Ubersicht</h2>
+                <h2>Getränke-Übersicht</h2>
                 <div class="drink-list" id="drinkResults">
                     <!-- Filled by JS -->
                 </div>
@@ -643,7 +643,7 @@
         // To enable cloud storage: Create a bin at jsonbin.io with {"responses":[]}
         // Then replace PLACEHOLDER_BIN_ID with the bin ID
         const CONFIG = {
-            binId: 'PLACEHOLDER_BIN_ID', // Created bin ID goes here
+            binId: '69850325ae596e708f142a54', // Created bin ID goes here
             apiKey: '$2a$10$b9ndxCm6OP1TyFLhoe2jiu1C2Jp2p1Id43v18YsvM3xTwM8bePUsK', // Access key with read+update
             expectedGuests: 30,
             // Research-based calculations
@@ -677,7 +677,7 @@
             if (isAdmin) {
                 document.getElementById('userView').classList.add('hidden');
                 document.getElementById('adminView').classList.remove('hidden');
-                document.querySelector('header').innerHTML = '<h1>Pizza und Getranke - Admin</h1>';
+                document.querySelector('header').innerHTML = '<h1>Pizza und Getränke - Admin</h1>';
                 renderAdmin();
             } else {
                 if (existingName) {
@@ -795,12 +795,12 @@
             }
             
             if (!pizzaInput) {
-                showMessage('Bitte wahle eine Pizza-Praferenz.', 'error');
+                showMessage('Bitte wähle eine Pizza-Präferenz.', 'error');
                 return;
             }
             
             if (drinkInputs.length === 0) {
-                showMessage('Bitte wahle mindestens ein Getrank.', 'error');
+                showMessage('Bitte wähle mindestens ein Getränk.', 'error');
                 return;
             }
             
