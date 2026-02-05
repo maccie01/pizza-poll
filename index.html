@@ -639,10 +639,12 @@
     </div>
 
     <script>
-        // Configuration - UPDATE BIN_ID AFTER CREATING NEW BIN
+        // Configuration
+        // To enable cloud storage: Create a bin at jsonbin.io with {"responses":[]}
+        // Then replace PLACEHOLDER_BIN_ID with the bin ID
         const CONFIG = {
-            binId: 'PLACEHOLDER_BIN_ID', // TODO: Replace with actual bin ID
-            apiKey: '$2a$10$b9ndxCm6OP1TyFLhoe2jiu1C2Jp2p1Id43v18YsvM3xTwM8bePUsK',
+            binId: 'PLACEHOLDER_BIN_ID', // Created bin ID goes here
+            apiKey: '$2a$10$b9ndxCm6OP1TyFLhoe2jiu1C2Jp2p1Id43v18YsvM3xTwM8bePUsK', // Access key with read+update
             expectedGuests: 30,
             // Research-based calculations
             slicesPerPerson: 3,
