@@ -26,16 +26,20 @@ jobs:
       - name: Inject API key
         env:
           JSONBIN_KEY: ${{ secrets.JSONBIN_API_KEY }}
+        shell: python3 {0}
         run: |
-          python3 << 'PYEOF'
           import os
-          key = os.environ['JSONBIN_KEY']
+          key = os.environ.get('JSONBIN_KEY', '')
+          if not key:
+              raise ValueError('JSONBIN_API_KEY secret is not set')
           with open('index.html', 'r') as f:
               content = f.read()
+          assert '__JSONBIN_API_KEY__' in content, 'Placeholder not found in index.html'
           content = content.replace('__JSONBIN_API_KEY__', key)
+          assert '__JSONBIN_API_KEY__' not in content, 'Replacement failed'
           with open('index.html', 'w') as f:
               f.write(content)
-          PYEOF
+          print('API key injected successfully')
 
       - uses: actions/configure-pages@v5
 

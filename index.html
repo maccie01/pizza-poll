@@ -484,7 +484,7 @@
                     </div>
                     <div class="field">
                         <label for="cfgDescription">Beschreibung</label>
-                        <textarea id="cfgDescription" placeholder="Kurze Beschreibung fuer die Teilnehmer"></textarea>
+                        <textarea id="cfgDescription" placeholder="Kurze Beschreibung für die Teilnehmer"></textarea>
                     </div>
                     <div class="field-row">
                         <div class="field">
@@ -520,19 +520,19 @@
                     <div id="foodEditor">
                         <h2>Essen-Optionen</h2>
                         <div class="editable-list" id="foodList"></div>
-                        <button class="add-item-btn" onclick="addOption('food')" style="margin-top:8px">+ Option hinzufuegen</button>
+                        <button class="add-item-btn" onclick="addOption('food')" style="margin-top:8px">+ Option hinzufügen</button>
                     </div>
                 </section>
 
                 <section id="drinkSection">
                     <div class="category-toggle">
                         <div class="toggle-switch active" id="drinkToggle" onclick="toggleCategory('drink')"></div>
-                        <span class="toggle-label">Getraenke</span>
+                        <span class="toggle-label">Getränke</span>
                     </div>
                     <div id="drinkEditor">
-                        <h2>Getraenke-Optionen</h2>
+                        <h2>Getränke-Optionen</h2>
                         <div class="editable-list" id="drinkList"></div>
-                        <button class="add-item-btn" onclick="addOption('drink')" style="margin-top:8px">+ Option hinzufuegen</button>
+                        <button class="add-item-btn" onclick="addOption('drink')" style="margin-top:8px">+ Option hinzufügen</button>
                     </div>
                 </section>
 
@@ -544,7 +544,7 @@
                     <div id="snackEditor">
                         <h2>Snack-Optionen</h2>
                         <div class="editable-list" id="snackList"></div>
-                        <button class="add-item-btn" onclick="addOption('snack')" style="margin-top:8px">+ Option hinzufuegen</button>
+                        <button class="add-item-btn" onclick="addOption('snack')" style="margin-top:8px">+ Option hinzufügen</button>
                     </div>
                 </section>
 
@@ -552,11 +552,11 @@
                     <h2>Berechnungsregeln</h2>
                     <div class="field-row">
                         <div class="field">
-                            <label for="cfgSlicesPerPerson">Stuecke pro Person</label>
+                            <label for="cfgSlicesPerPerson">Stücke pro Person</label>
                             <input type="number" id="cfgSlicesPerPerson" value="3" min="1" max="10">
                         </div>
                         <div class="field">
-                            <label for="cfgSlicesPerPizza">Stuecke pro Pizza</label>
+                            <label for="cfgSlicesPerPizza">Stücke pro Pizza</label>
                             <input type="number" id="cfgSlicesPerPizza" value="8" min="4" max="24">
                         </div>
                     </div>
@@ -585,17 +585,17 @@
                 </section>
 
                 <section id="resultFoodSection">
-                    <h2>Essen-Uebersicht</h2>
+                    <h2>Essen-Übersicht</h2>
                     <div class="result-grid" id="foodResults"></div>
                 </section>
 
                 <section id="resultDrinkSection">
-                    <h2>Getraenke-Uebersicht</h2>
+                    <h2>Getränke-Übersicht</h2>
                     <div class="item-list" id="drinkResults"></div>
                 </section>
 
                 <section id="resultSnackSection">
-                    <h2>Snack-Uebersicht</h2>
+                    <h2>Snack-Übersicht</h2>
                     <div class="item-list" id="snackResults"></div>
                 </section>
 
@@ -645,7 +645,7 @@
                 </section>
 
                 <section id="userDrinkSection" class="hidden">
-                    <h2>Getraenke (Mehrfachauswahl)</h2>
+                    <h2>Getränke (Mehrfachauswahl)</h2>
                     <div class="checkbox-group" id="drinkGroup"></div>
                 </section>
 
@@ -655,7 +655,7 @@
                 </section>
 
                 <section>
-                    <h2>Allergien / Einschraenkungen (optional)</h2>
+                    <h2>Allergien / Einschränkungen (optional)</h2>
                     <div class="field">
                         <textarea id="restrictions" name="restrictions" placeholder="z.B. glutenfrei, laktosefrei, Nussallergie..."></textarea>
                     </div>
@@ -674,10 +674,10 @@
                         <polyline points="22 4 12 14.01 9 11.01"/>
                     </svg>
                 </div>
-                <h2 class="thank-you-title">Danke fuer deine Anmeldung!</h2>
-                <p class="thank-you-text">Deine Praeferenzen wurden gespeichert.</p>
+                <h2 class="thank-you-title">Danke für deine Anmeldung!</h2>
+                <p class="thank-you-text">Deine Präferenzen wurden gespeichert.</p>
                 <p class="thank-you-name" id="thankYouName"></p>
-                <button class="btn btn-outline" style="margin-top:24px;display:inline-flex;width:auto" onclick="editResponse()">Antwort aendern</button>
+                <button class="btn btn-outline" style="margin-top:24px;display:inline-flex;width:auto" onclick="editResponse()">Antwort ändern</button>
             </div>
         </div>
 
@@ -700,12 +700,12 @@ const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
 const TEMPLATES = {
     pizza: {
         title: 'Pizza-Abend',
-        description: 'Gemeinsamer Pizza-Abend. Welcher Termin und was moechtest du essen?',
+        description: 'Gemeinsamer Pizza-Abend. Welcher Termin und was möchtest du essen?',
         food: true, drink: true, snack: true,
         foodOptions: {
             vegetarian: { label: 'Vegetarisch' },
             standard: { label: 'Standard (auch Fleisch)' },
-            none: { label: 'Ich moechte nicht essen' }
+            none: { label: 'Ich möchte nicht essen' }
         },
         drinkOptions: {
             cola: { label: 'Cola', litersPerSelection: 0.5 },
@@ -720,19 +720,19 @@ const TEMPLATES = {
         snackOptions: {
             chips: { label: 'Chips' },
             nachos: { label: 'Nachos' },
-            nuesse: { label: 'Nuesse' },
+            nuesse: { label: 'Nüsse' },
             salzstangen: { label: 'Salzstangen' },
-            gummibaerchen: { label: 'Gummibaerchen' }
+            gummibaerchen: { label: 'Gummibärchen' }
         }
     },
     burger: {
         title: 'Burger-Abend',
-        description: 'Burger-Abend! Waehle deinen Termin und deine Praeferenzen.',
+        description: 'Burger-Abend! Wähle deinen Termin und deine Präferenzen.',
         food: true, drink: true, snack: true,
         foodOptions: {
             vegetarian: { label: 'Vegetarisch' },
             classic: { label: 'Classic Burger' },
-            none: { label: 'Ich moechte nicht essen' }
+            none: { label: 'Ich möchte nicht essen' }
         },
         drinkOptions: {
             cola: { label: 'Cola', litersPerSelection: 0.5 },
@@ -752,7 +752,7 @@ const TEMPLATES = {
     },
     film: {
         title: 'Film-Abend',
-        description: 'Film-Abend! Wann passt es dir und was moechtest du trinken/snacken?',
+        description: 'Film-Abend! Wann passt es dir und was möchtest du trinken/snacken?',
         food: false, drink: true, snack: true,
         foodOptions: {},
         drinkOptions: {
@@ -765,7 +765,7 @@ const TEMPLATES = {
             popcorn: { label: 'Popcorn' },
             nachos: { label: 'Nachos' },
             chips: { label: 'Chips' },
-            gummibaerchen: { label: 'Gummibaerchen' }
+            gummibaerchen: { label: 'Gummibärchen' }
         }
     },
     termin: {
@@ -794,9 +794,9 @@ const TEMPLATES = {
 };
 
 const TEMPLATE_LABELS = {
-    pizza: { title: 'Pizza-Abend', desc: 'Pizza, Getraenke, Snacks' },
-    burger: { title: 'Burger-Abend', desc: 'Burger, Getraenke, Beilagen' },
-    film: { title: 'Film-Abend', desc: 'Getraenke und Snacks' },
+    pizza: { title: 'Pizza-Abend', desc: 'Pizza, Getränke, Snacks' },
+    burger: { title: 'Burger-Abend', desc: 'Burger, Getränke, Beilagen' },
+    film: { title: 'Film-Abend', desc: 'Getränke und Snacks' },
     termin: { title: 'Nur Termin', desc: 'Nur Terminfindung' },
     custom: { title: 'Eigene', desc: 'Alles anpassbar' }
 };
@@ -1111,7 +1111,7 @@ function renderResults() {
         });
         const minTotal = responses.length * (rules.litersPerPerson || 1.5);
         if (totalLiters < minTotal) totalLiters = minTotal;
-        statsHtml += `<div class="stat-box"><div class="stat-value">${Math.ceil(totalLiters)}L</div><div class="stat-label">Getraenke</div></div>`;
+        statsHtml += `<div class="stat-box"><div class="stat-value">${Math.ceil(totalLiters)}L</div><div class="stat-label">Getränke</div></div>`;
     }
 
     document.getElementById('adminStats').innerHTML = statsHtml;
@@ -1240,7 +1240,7 @@ function renderResults() {
                 <span class="participant-name">${escapeHtml(r.name)}</span>
                 ${foodLabel ? `<span class="participant-badge ${foodClass}">${foodLabel}</span>` : '<span></span>'}
                 <span style="font-size:12px;color:var(--gray-500)">${datesLabel}</span>
-                ${drinksLabel ? `<span class="participant-details">Getraenke: ${drinksLabel}</span>` : ''}
+                ${drinksLabel ? `<span class="participant-details">Getränke: ${drinksLabel}</span>` : ''}
                 ${snacksLabel ? `<span class="participant-details">Snacks: ${snacksLabel}</span>` : ''}
                 ${r.restrictions ? `<span class="participant-details">Hinweis: ${escapeHtml(r.restrictions)}</span>` : ''}
             </div>`;
@@ -1270,14 +1270,14 @@ function initUser() {
     let infoHtml = `<strong>Uhrzeit: ${cfg.time || '17:00 Uhr'}</strong>`;
     if (hasFood) {
         const rules = cfg.calculationRules || {};
-        infoHtml += `Richtwerte: ${rules.slicesPerPerson || 3} Stuecke Pizza, ca. ${rules.litersPerPerson || 1.5}L Getraenke pro Person`;
+        infoHtml += `Richtwerte: ${rules.slicesPerPerson || 3} Stücke Pizza, ca. ${rules.litersPerPerson || 1.5}L Getränke pro Person`;
     }
     document.getElementById('eventInfoBox').innerHTML = infoHtml;
 
     document.getElementById('responseCount').textContent = `${data.responses.length} Anmeldungen`;
 
     // Date grid
-    document.getElementById('dateHint').textContent = `Waehle alle Tage, an denen du kannst (${cfg.time || '17:00 Uhr'})`;
+    document.getElementById('dateHint').textContent = `Wähle alle Tage, an denen du kannst (${cfg.time || '17:00 Uhr'})`;
     renderDateGrid(cfg.startDate, cfg.weeks || 3);
 
     // Food
@@ -1338,7 +1338,7 @@ function renderDateGrid(startDate, weeks) {
     const grid = document.getElementById('dateGrid');
     const start = new Date(startDate + 'T12:00:00');
     const dayLabels = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
-    const monthNames = ['Jan', 'Feb', 'Maer', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+    const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
 
     // Align to Monday
     const dow = start.getDay();
@@ -1434,13 +1434,13 @@ document.getElementById('pollForm').addEventListener('submit', async (e) => {
 
     const name = document.getElementById('userName').value.trim();
     if (!name) { showMessage('Bitte gib deinen Namen ein.', 'error'); return; }
-    if (selectedDates.size === 0) { showMessage('Bitte waehle mindestens einen Termin.', 'error'); return; }
+    if (selectedDates.size === 0) { showMessage('Bitte wähle mindestens einen Termin.', 'error'); return; }
 
     const foodInput = document.querySelector('input[name="food"]:checked');
-    if (hasFood && !foodInput) { showMessage('Bitte waehle eine Essen-Praeferenz.', 'error'); return; }
+    if (hasFood && !foodInput) { showMessage('Bitte wähle eine Essen-Präferenz.', 'error'); return; }
 
     const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
-    if (hasDrinks && drinkInputs.length === 0) { showMessage('Bitte waehle mindestens ein Getraenk.', 'error'); return; }
+    if (hasDrinks && drinkInputs.length === 0) { showMessage('Bitte wähle mindestens ein Getraenk.', 'error'); return; }
 
     const snackInputs = document.querySelectorAll('input[name="snacks"]:checked');
     const restrictions = document.getElementById('restrictions').value.trim();
