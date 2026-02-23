@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pizza und Getränke - Abstimmung</title>
+    <title>Event Organizer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,47 +24,37 @@
             --success: #018a16;
             --error: #d5001c;
         }
-        
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         html { font-size: 16px; }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--white);
             color: var(--black);
             line-height: 1.5;
-            min-height: 100vh;
             min-height: 100dvh;
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
         }
-        
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 40px 16px;
-        }
-        
+
+        .container { max-width: 720px; margin: 0 auto; padding: 40px 16px; }
+
         header {
             margin-bottom: 32px;
             padding-bottom: 24px;
             border-bottom: 1px solid var(--gray-200);
         }
-        
+
         h1 {
             font-size: clamp(24px, 5vw, 32px);
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 8px;
         }
-        
-        .description {
-            font-size: 15px;
-            color: var(--gray-600);
-            margin-bottom: 16px;
-        }
-        
+
+        .description { font-size: 15px; color: var(--gray-600); margin-bottom: 16px; }
+
         .info-box {
             background: var(--gray-50);
             border-left: 3px solid var(--black);
@@ -72,12 +62,8 @@
             font-size: 13px;
             color: var(--gray-700);
         }
-        
-        .info-box strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-        
+        .info-box strong { display: block; margin-bottom: 4px; }
+
         .meta-bar {
             display: flex;
             flex-wrap: wrap;
@@ -86,9 +72,9 @@
             font-size: 14px;
             color: var(--gray-500);
         }
-        
+
         section { margin-bottom: 32px; }
-        
+
         h2 {
             font-size: 13px;
             font-weight: 600;
@@ -97,7 +83,7 @@
             color: var(--gray-500);
             margin-bottom: 16px;
         }
-        
+
         .message {
             padding: 14px 16px;
             margin-bottom: 24px;
@@ -105,23 +91,10 @@
             font-weight: 500;
             border-left: 3px solid;
         }
-        
-        .message.success {
-            background: #f0fdf4;
-            border-color: var(--success);
-            color: var(--success);
-        }
-        
-        .message.error {
-            background: #fef2f2;
-            border-color: var(--error);
-            color: var(--error);
-        }
-        
-        .field {
-            margin-bottom: 24px;
-        }
-        
+        .message.success { background: #f0fdf4; border-color: var(--success); color: var(--success); }
+        .message.error { background: #fef2f2; border-color: var(--error); color: var(--error); }
+
+        .field { margin-bottom: 24px; }
         .field label {
             display: block;
             font-size: 12px;
@@ -131,9 +104,12 @@
             color: var(--gray-500);
             margin-bottom: 8px;
         }
-        
+
         .field input[type="text"],
-        .field textarea {
+        .field input[type="number"],
+        .field input[type="date"],
+        .field textarea,
+        .field select {
             width: 100%;
             padding: 14px 16px;
             background-color: var(--white);
@@ -143,31 +119,23 @@
             font-family: inherit;
             transition: border-color 0.15s, box-shadow 0.15s;
         }
-        
-        .field textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .field input[type="text"]:focus,
-        .field textarea:focus {
+        .field textarea { min-height: 80px; resize: vertical; }
+        .field input:focus, .field textarea:focus, .field select:focus {
             outline: none;
             border-color: var(--black);
             box-shadow: 0 0 0 1px var(--black);
         }
-        
-        .field input[type="text"]::placeholder,
-        .field textarea::placeholder {
-            color: var(--gray-400);
+        .field input::placeholder, .field textarea::placeholder { color: var(--gray-400); }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
-        
+        @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
         /* Radio Group */
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
+        .radio-group { display: flex; flex-direction: column; gap: 8px; }
         .radio-option {
             display: flex;
             align-items: center;
@@ -177,63 +145,36 @@
             cursor: pointer;
             transition: border-color 0.15s, background 0.15s;
         }
-        
-        .radio-option:hover {
-            background: var(--gray-50);
-        }
-        
-        .radio-option.selected {
-            border-color: var(--black);
-            background: var(--gray-100);
-        }
-        
-        .radio-option input {
-            display: none;
-        }
-        
+        .radio-option:hover { background: var(--gray-50); }
+        .radio-option.selected { border-color: var(--black); background: var(--gray-100); }
+        .radio-option input { display: none; }
         .radio-indicator {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 2px solid var(--gray-400);
             border-radius: 50%;
             flex-shrink: 0;
             position: relative;
         }
-        
-        .radio-option.selected .radio-indicator {
-            border-color: var(--black);
-        }
-        
+        .radio-option.selected .radio-indicator { border-color: var(--black); }
         .radio-option.selected .radio-indicator::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             background: var(--black);
             border-radius: 50%;
         }
-        
-        .radio-label {
-            font-size: 15px;
-            font-weight: 500;
-        }
-        
+        .radio-label { font-size: 15px; font-weight: 500; }
+
         /* Checkbox Group */
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
-        
-        @media (max-width: 400px) {
-            .checkbox-group {
-                grid-template-columns: 1fr;
-            }
-        }
-        
+        @media (max-width: 400px) { .checkbox-group { grid-template-columns: 1fr; } }
+
         .checkbox-option {
             display: flex;
             align-items: center;
@@ -243,50 +184,61 @@
             cursor: pointer;
             transition: border-color 0.15s, background 0.15s;
         }
-        
-        .checkbox-option:hover {
-            background: var(--gray-50);
-        }
-        
-        .checkbox-option.selected {
-            border-color: var(--black);
-            background: var(--gray-100);
-        }
-        
-        .checkbox-option input {
-            display: none;
-        }
-        
+        .checkbox-option:hover { background: var(--gray-50); }
+        .checkbox-option.selected { border-color: var(--black); background: var(--gray-100); }
+        .checkbox-option input { display: none; }
         .checkbox-indicator {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 2px solid var(--gray-400);
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        
-        .checkbox-option.selected .checkbox-indicator {
-            border-color: var(--black);
-            background: var(--black);
-        }
-        
+        .checkbox-option.selected .checkbox-indicator { border-color: var(--black); background: var(--black); }
         .checkbox-option.selected .checkbox-indicator::after {
             content: '';
-            width: 6px;
-            height: 10px;
+            width: 6px; height: 10px;
             border: 2px solid var(--white);
-            border-top: none;
-            border-left: none;
+            border-top: none; border-left: none;
             transform: rotate(45deg) translateY(-1px);
         }
-        
-        .checkbox-label {
-            font-size: 14px;
-            font-weight: 500;
+        .checkbox-label { font-size: 14px; font-weight: 500; }
+
+        /* Date Grid */
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
         }
-        
+        .date-grid-header {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            text-align: center;
+            padding: 8px 4px;
+        }
+        .date-cell {
+            text-align: center;
+            padding: 10px 4px;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 13px;
+        }
+        .date-cell:hover { background: var(--gray-50); }
+        .date-cell.selected { background: var(--black); color: var(--white); border-color: var(--black); }
+        .date-cell .date-day { font-weight: 600; font-size: 15px; }
+        .date-cell .date-month { font-size: 11px; color: var(--gray-500); }
+        .date-cell.selected .date-month { color: var(--gray-300); }
+
+        @media (max-width: 400px) {
+            .date-cell { padding: 8px 2px; }
+            .date-cell .date-day { font-size: 13px; }
+        }
+
         .btn {
             display: flex;
             align-items: center;
@@ -304,52 +256,10 @@
             cursor: pointer;
             transition: background 0.15s, transform 0.1s;
         }
-        
         .btn:hover { background: var(--gray-800); }
         .btn:active { transform: scale(0.98); }
         .btn:disabled { background: var(--gray-300); cursor: not-allowed; transform: none; }
-        
-        /* Admin View */
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 24px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
-        }
-        
-        .admin-stats {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-box {
-            padding: 16px 20px;
-            background: var(--gray-100);
-            min-width: 100px;
-        }
-        
-        .stat-box.highlight {
-            background: var(--black);
-            color: var(--white);
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        
-        .stat-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-        
+
         .btn-outline {
             background: var(--white);
             color: var(--black);
@@ -357,55 +267,44 @@
             padding: 12px 20px;
             width: auto;
         }
-        
-        .btn-outline:hover {
-            background: var(--gray-100);
-        }
-        
-        /* Result Cards */
-        .result-section {
-            margin-bottom: 32px;
-        }
-        
-        .result-grid {
+        .btn-outline:hover { background: var(--gray-100); }
+
+        /* Template Cards */
+        .template-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
-        
-        .result-card {
-            padding: 16px;
-            background: var(--gray-50);
-            border: 1px solid var(--gray-200);
+        @media (max-width: 500px) { .template-grid { grid-template-columns: 1fr; } }
+
+        .template-card {
+            padding: 20px;
+            border: 2px solid var(--gray-200);
+            cursor: pointer;
+            transition: all 0.15s;
         }
-        
-        .result-card-label {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-        
-        .result-card-value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        
-        .result-card-detail {
-            font-size: 12px;
-            color: var(--gray-500);
-            margin-top: 4px;
-        }
-        
-        /* Drink Breakdown */
-        .drink-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .drink-item {
+        .template-card:hover { border-color: var(--gray-400); }
+        .template-card.selected { border-color: var(--black); background: var(--gray-50); }
+        .template-card-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+        .template-card-desc { font-size: 12px; color: var(--gray-500); }
+
+        /* Admin Stats */
+        .admin-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+        .stat-box { padding: 16px 20px; background: var(--gray-100); min-width: 100px; }
+        .stat-box.highlight { background: var(--black); color: var(--white); }
+        .stat-value { font-size: 24px; font-weight: 700; line-height: 1.2; }
+        .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; margin-top: 4px; }
+
+        /* Result Cards */
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+        .result-card { padding: 16px; background: var(--gray-50); border: 1px solid var(--gray-200); }
+        .result-card-label { font-size: 12px; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .result-card-value { font-size: 20px; font-weight: 700; }
+        .result-card-detail { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
+
+        /* Item Lists */
+        .item-list { display: flex; flex-direction: column; gap: 8px; }
+        .item-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -413,31 +312,29 @@
             background: var(--gray-50);
             border: 1px solid var(--gray-200);
         }
-        
-        .drink-name {
-            font-weight: 500;
-        }
-        
-        .drink-stats {
-            text-align: right;
-        }
-        
-        .drink-count {
-            font-weight: 600;
-        }
-        
-        .drink-liters {
-            font-size: 12px;
-            color: var(--gray-500);
-        }
-        
-        /* Participants Table */
-        .participants-list {
+        .item-name { font-weight: 500; }
+        .item-stats { text-align: right; }
+        .item-count { font-weight: 600; }
+        .item-detail { font-size: 12px; color: var(--gray-500); }
+
+        /* Date Ranking */
+        .date-rank {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
         }
-        
+        .date-rank:first-child { background: var(--gray-100); border-color: var(--black); }
+        .date-rank-pos { font-size: 18px; font-weight: 700; color: var(--gray-400); min-width: 28px; }
+        .date-rank:first-child .date-rank-pos { color: var(--black); }
+        .date-rank-label { flex: 1; font-weight: 500; }
+        .date-rank-bar { height: 6px; background: var(--gray-300); flex: 1; max-width: 200px; }
+        .date-rank-bar-fill { height: 100%; background: var(--black); }
+        .date-rank-count { font-weight: 600; min-width: 40px; text-align: right; }
+
+        /* Participant List */
         .participant-item {
             display: grid;
             grid-template-columns: 1fr auto auto;
@@ -447,73 +344,111 @@
             border: 1px solid var(--gray-200);
             align-items: center;
         }
-        
-        .participant-name {
-            font-weight: 500;
+        .participant-name { font-weight: 500; }
+        .participant-badge { font-size: 13px; padding: 4px 8px; background: var(--gray-200); }
+        .participant-badge.vegetarian { background: #dcfce7; color: #166534; }
+        .participant-badge.standard, .participant-badge.classic { background: #fee2e2; color: #991b1b; }
+        .participant-badge.none { background: #f3f4f6; color: #6b7280; }
+        .participant-details { font-size: 12px; color: var(--gray-500); grid-column: 1 / -1; margin-top: -4px; }
+
+        /* Editable Options List */
+        .editable-list { display: flex; flex-direction: column; gap: 8px; }
+        .editable-item { display: flex; gap: 8px; align-items: center; }
+        .editable-item input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-300);
+            font-size: 14px;
+            font-family: inherit;
         }
-        
-        .participant-pizza {
-            font-size: 13px;
-            padding: 4px 8px;
-            background: var(--gray-200);
-        }
-        
-        .participant-pizza.vegetarian { background: #dcfce7; color: #166534; }
-        .participant-pizza.standard { background: #fee2e2; color: #991b1b; }
-        .participant-pizza.none { background: #f3f4f6; color: #6b7280; }
-        
-        .participant-restrictions {
-            font-size: 12px;
-            color: var(--gray-500);
-            grid-column: 1 / -1;
-            margin-top: -4px;
-        }
-        
-        /* Thank You View */
-        .thank-you-content {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .thank-you-icon {
-            color: var(--success);
-            margin-bottom: 24px;
-        }
-        
-        .thank-you-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: none;
-            letter-spacing: normal;
-            color: var(--black);
-        }
-        
-        .thank-you-text {
-            font-size: 16px;
-            color: var(--gray-600);
-            margin-bottom: 8px;
-        }
-        
-        .thank-you-name {
+        .editable-item input:focus { outline: none; border-color: var(--black); }
+        .editable-item button {
+            padding: 10px 12px;
+            background: none;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
             font-size: 14px;
             color: var(--gray-500);
-            font-style: italic;
         }
-        
+        .editable-item button:hover { border-color: var(--error); color: var(--error); }
+
+        .add-item-btn {
+            padding: 10px;
+            background: none;
+            border: 1px dashed var(--gray-300);
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--gray-500);
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .add-item-btn:hover { border-color: var(--black); color: var(--black); }
+
+        /* Category Toggle */
+        .category-toggle { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .toggle-switch {
+            width: 44px; height: 24px;
+            background: var(--gray-300);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .toggle-switch.active { background: var(--black); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: var(--white);
+            border-radius: 50%;
+            top: 3px; left: 3px;
+            transition: transform 0.2s;
+        }
+        .toggle-switch.active::after { transform: translateX(20px); }
+        .toggle-label { font-size: 14px; font-weight: 500; }
+
+        /* Tab bar */
+        .tab-bar {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 32px;
+        }
+        .tab {
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-400);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+        }
+        .tab:hover { color: var(--gray-600); }
+        .tab.active { color: var(--black); border-bottom-color: var(--black); }
+
+        /* Thank You View */
+        .thank-you-content { text-align: center; padding: 60px 20px; }
+        .thank-you-icon { color: var(--success); margin-bottom: 24px; }
+        .thank-you-title {
+            font-size: 24px; font-weight: 700; margin-bottom: 12px;
+            text-transform: none; letter-spacing: normal; color: var(--black);
+        }
+        .thank-you-text { font-size: 16px; color: var(--gray-600); margin-bottom: 8px; }
+        .thank-you-name { font-size: 14px; color: var(--gray-500); font-style: italic; }
+
         .hidden { display: none !important; }
-        
-        /* Print Styles */
+        .loading { text-align: center; padding: 40px; color: var(--gray-400); }
+
         @media print {
             @page { margin: 10mm; }
             body { background: white; }
             .container { padding: 10px; max-width: none; }
-            .admin-header button { display: none; }
-            .btn { display: none; }
-            header { display: none; }
+            .btn, .tab-bar { display: none; }
         }
-        
-        /* Mobile */
+
         @media (max-width: 600px) {
             .container { padding: 24px 12px; }
             h1 { font-size: 22px; }
@@ -524,155 +459,212 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Pizza und Getränke</h1>
-            <p class="description">Get-Together Präferenzabfrage. Bitte gib deine Vorlieben an, damit wir die richtige Menge bestellen können.</p>
-            <div class="info-box">
-                <strong>Richtwerte pro Person:</strong>
-                Pizza: 2-3 Stücke | Getränke: ca. 1.5 Liter
+        <div id="loadingView" class="loading">Lade...</div>
+
+        <!-- Admin View -->
+        <div id="adminView" class="hidden">
+            <header>
+                <h1 id="adminTitle">Event Organizer - Admin</h1>
+            </header>
+
+            <div class="tab-bar">
+                <div class="tab active" data-tab="config" onclick="switchAdminTab('config')">Konfiguration</div>
+                <div class="tab" data-tab="results" onclick="switchAdminTab('results')">Ergebnisse</div>
             </div>
-        </header>
-        
-        <div class="meta-bar">
-            <span id="responseCount">Lade...</span>
+
+            <div id="adminMessage" class="message hidden"></div>
+
+            <!-- Config Tab -->
+            <div id="adminConfigTab">
+                <section>
+                    <h2>Event-Details</h2>
+                    <div class="field">
+                        <label for="cfgTitle">Titel</label>
+                        <input type="text" id="cfgTitle" placeholder="z.B. Pizza-Abend, Studenten-Treffen">
+                    </div>
+                    <div class="field">
+                        <label for="cfgDescription">Beschreibung</label>
+                        <textarea id="cfgDescription" placeholder="Kurze Beschreibung fuer die Teilnehmer"></textarea>
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="cfgStartDate">Startdatum</label>
+                            <input type="date" id="cfgStartDate">
+                        </div>
+                        <div class="field">
+                            <label for="cfgWeeks">Wochen</label>
+                            <select id="cfgWeeks">
+                                <option value="1">1 Woche</option>
+                                <option value="2">2 Wochen</option>
+                                <option value="3" selected>3 Wochen</option>
+                                <option value="4">4 Wochen</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="cfgTime">Uhrzeit</label>
+                        <input type="text" id="cfgTime" value="17:00 Uhr" placeholder="z.B. 17:00 Uhr">
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Vorlage</h2>
+                    <div class="template-grid" id="templateGrid"></div>
+                </section>
+
+                <section id="foodSection">
+                    <div class="category-toggle">
+                        <div class="toggle-switch active" id="foodToggle" onclick="toggleCategory('food')"></div>
+                        <span class="toggle-label">Essen</span>
+                    </div>
+                    <div id="foodEditor">
+                        <h2>Essen-Optionen</h2>
+                        <div class="editable-list" id="foodList"></div>
+                        <button class="add-item-btn" onclick="addOption('food')" style="margin-top:8px">+ Option hinzufuegen</button>
+                    </div>
+                </section>
+
+                <section id="drinkSection">
+                    <div class="category-toggle">
+                        <div class="toggle-switch active" id="drinkToggle" onclick="toggleCategory('drink')"></div>
+                        <span class="toggle-label">Getraenke</span>
+                    </div>
+                    <div id="drinkEditor">
+                        <h2>Getraenke-Optionen</h2>
+                        <div class="editable-list" id="drinkList"></div>
+                        <button class="add-item-btn" onclick="addOption('drink')" style="margin-top:8px">+ Option hinzufuegen</button>
+                    </div>
+                </section>
+
+                <section id="snackSection">
+                    <div class="category-toggle">
+                        <div class="toggle-switch active" id="snackToggle" onclick="toggleCategory('snack')"></div>
+                        <span class="toggle-label">Snacks</span>
+                    </div>
+                    <div id="snackEditor">
+                        <h2>Snack-Optionen</h2>
+                        <div class="editable-list" id="snackList"></div>
+                        <button class="add-item-btn" onclick="addOption('snack')" style="margin-top:8px">+ Option hinzufuegen</button>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Berechnungsregeln</h2>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="cfgSlicesPerPerson">Stuecke pro Person</label>
+                            <input type="number" id="cfgSlicesPerPerson" value="3" min="1" max="10">
+                        </div>
+                        <div class="field">
+                            <label for="cfgSlicesPerPizza">Stuecke pro Pizza</label>
+                            <input type="number" id="cfgSlicesPerPizza" value="8" min="4" max="24">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="cfgBuffer">Puffer (%)</label>
+                            <input type="number" id="cfgBuffer" value="15" min="0" max="50">
+                        </div>
+                        <div class="field">
+                            <label for="cfgLitersPerPerson">Liter pro Person</label>
+                            <input type="number" id="cfgLitersPerPerson" value="1.5" min="0.5" max="5" step="0.1">
+                        </div>
+                    </div>
+                </section>
+
+                <button class="btn" onclick="saveConfig()">Konfiguration speichern</button>
+            </div>
+
+            <!-- Results Tab -->
+            <div id="adminResultsTab" class="hidden">
+                <div class="admin-stats" id="adminStats"></div>
+
+                <section>
+                    <h2>Termin-Ranking</h2>
+                    <div class="item-list" id="dateRanking"></div>
+                </section>
+
+                <section id="resultFoodSection">
+                    <h2>Essen-Uebersicht</h2>
+                    <div class="result-grid" id="foodResults"></div>
+                </section>
+
+                <section id="resultDrinkSection">
+                    <h2>Getraenke-Uebersicht</h2>
+                    <div class="item-list" id="drinkResults"></div>
+                </section>
+
+                <section id="resultSnackSection">
+                    <h2>Snack-Uebersicht</h2>
+                    <div class="item-list" id="snackResults"></div>
+                </section>
+
+                <section>
+                    <h2 id="participantsTitle">Teilnehmer (0)</h2>
+                    <div style="display:flex;flex-direction:column;gap:8px" id="participantsList"></div>
+                </section>
+
+                <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+                    <button class="btn btn-outline" onclick="window.print()">Drucken</button>
+                    <button class="btn btn-outline" onclick="copyShareLink()">Link kopieren</button>
+                </div>
+            </div>
         </div>
-        
-        <div id="message" class="message hidden"></div>
-        
-        <!-- User View -->
-        <div id="userView">
+
+        <!-- User Vote View -->
+        <div id="userView" class="hidden">
+            <header>
+                <h1 id="eventTitle">Event</h1>
+                <p class="description" id="eventDescription"></p>
+                <div class="info-box" id="eventInfoBox"></div>
+            </header>
+
+            <div class="meta-bar">
+                <span id="responseCount"></span>
+            </div>
+
+            <div id="message" class="message hidden"></div>
+
             <form id="pollForm">
                 <section>
                     <h2>Dein Name</h2>
                     <div class="field">
-                        <input type="text" id="name" name="name" placeholder="Vor- und Nachname" required autocomplete="name">
+                        <input type="text" id="userName" name="name" placeholder="Vor- und Nachname" required autocomplete="name">
                     </div>
                 </section>
-                
-                <section>
-                    <h2>Pizza-Präferenz</h2>
-                    <div class="radio-group" id="pizzaGroup">
-                        <label class="radio-option" data-value="vegetarian">
-                            <input type="radio" name="pizza" value="vegetarian">
-                            <span class="radio-indicator"></span>
-                            <span class="radio-label">Vegetarisch</span>
-                        </label>
-                        <label class="radio-option" data-value="standard">
-                            <input type="radio" name="pizza" value="standard">
-                            <span class="radio-indicator"></span>
-                            <span class="radio-label">Standard (auch Fleisch)</span>
-                        </label>
-                        <label class="radio-option" data-value="none">
-                            <input type="radio" name="pizza" value="none">
-                            <span class="radio-indicator"></span>
-                            <span class="radio-label">Ich möchte nicht essen</span>
-                        </label>
-                    </div>
+
+                <section id="userDateSection">
+                    <h2>Termine</h2>
+                    <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px" id="dateHint"></p>
+                    <div class="date-grid" id="dateGrid"></div>
                 </section>
-                
-                <section>
-                    <h2>Getränke (Mehrfachauswahl)</h2>
-                    <div class="checkbox-group" id="drinkGroup">
-                        <label class="checkbox-option" data-value="cola">
-                            <input type="checkbox" name="drinks" value="cola">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Cola</span>
-                        </label>
-                        <label class="checkbox-option" data-value="fanta">
-                            <input type="checkbox" name="drinks" value="fanta">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Fanta</span>
-                        </label>
-                        <label class="checkbox-option" data-value="sprite">
-                            <input type="checkbox" name="drinks" value="sprite">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Sprite</span>
-                        </label>
-                        <label class="checkbox-option" data-value="wasser">
-                            <input type="checkbox" name="drinks" value="wasser">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Wasser</span>
-                        </label>
-                        <label class="checkbox-option" data-value="apfelschorle">
-                            <input type="checkbox" name="drinks" value="apfelschorle">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Apfelschorle</span>
-                        </label>
-                        <label class="checkbox-option" data-value="bier">
-                            <input type="checkbox" name="drinks" value="bier">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Bier</span>
-                        </label>
-                        <label class="checkbox-option" data-value="spezi">
-                            <input type="checkbox" name="drinks" value="spezi">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Spezi</span>
-                        </label>
-                        <label class="checkbox-option" data-value="eistee">
-                            <input type="checkbox" name="drinks" value="eistee">
-                            <span class="checkbox-indicator"></span>
-                            <span class="checkbox-label">Eistee</span>
-                        </label>
-                    </div>
+
+                <section id="userFoodSection" class="hidden">
+                    <h2>Essen</h2>
+                    <div class="radio-group" id="foodGroup"></div>
                 </section>
-                
-                <section>
-                    <h2>Snacks</h2>
-                    <div class="radio-group" id="snacksWantGroup">
-                        <label class="radio-option" data-value="yes">
-                            <input type="radio" name="wantSnacks" value="yes">
-                            <span class="radio-indicator"></span>
-                            <span class="radio-label">Ja, ich möchte Snacks</span>
-                        </label>
-                        <label class="radio-option" data-value="no">
-                            <input type="radio" name="wantSnacks" value="no">
-                            <span class="radio-indicator"></span>
-                            <span class="radio-label">Nein, danke</span>
-                        </label>
-                    </div>
-                    <div id="snackOptions" class="hidden" style="margin-top: 16px;">
-                        <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 12px;">Welche Snacks möchtest du?</p>
-                        <div class="checkbox-group" id="snackGroup">
-                            <label class="checkbox-option" data-value="chips">
-                                <input type="checkbox" name="snacks" value="chips">
-                                <span class="checkbox-indicator"></span>
-                                <span class="checkbox-label">Chips</span>
-                            </label>
-                            <label class="checkbox-option" data-value="nachos">
-                                <input type="checkbox" name="snacks" value="nachos">
-                                <span class="checkbox-indicator"></span>
-                                <span class="checkbox-label">Nachos</span>
-                            </label>
-                            <label class="checkbox-option" data-value="nuesse">
-                                <input type="checkbox" name="snacks" value="nuesse">
-                                <span class="checkbox-indicator"></span>
-                                <span class="checkbox-label">Nüsse</span>
-                            </label>
-                            <label class="checkbox-option" data-value="salzstangen">
-                                <input type="checkbox" name="snacks" value="salzstangen">
-                                <span class="checkbox-indicator"></span>
-                                <span class="checkbox-label">Salzstangen</span>
-                            </label>
-                            <label class="checkbox-option" data-value="gummibaerchen">
-                                <input type="checkbox" name="snacks" value="gummibaerchen">
-                                <span class="checkbox-indicator"></span>
-                                <span class="checkbox-label">Gummibärchen</span>
-                            </label>
-                        </div>
-                    </div>
+
+                <section id="userDrinkSection" class="hidden">
+                    <h2>Getraenke (Mehrfachauswahl)</h2>
+                    <div class="checkbox-group" id="drinkGroup"></div>
                 </section>
-                
+
+                <section id="userSnackSection" class="hidden">
+                    <h2>Snacks (Mehrfachauswahl)</h2>
+                    <div class="checkbox-group" id="snackGroup"></div>
+                </section>
+
                 <section>
-                    <h2>Allergien / Einschränkungen (optional)</h2>
+                    <h2>Allergien / Einschraenkungen (optional)</h2>
                     <div class="field">
                         <textarea id="restrictions" name="restrictions" placeholder="z.B. glutenfrei, laktosefrei, Nussallergie..."></textarea>
                     </div>
                 </section>
-                
+
                 <button type="submit" class="btn" id="submitBtn">Absenden</button>
             </form>
         </div>
-        
+
         <!-- Thank You View -->
         <div id="thankYouView" class="hidden">
             <div class="thank-you-content">
@@ -682,521 +674,834 @@
                         <polyline points="22 4 12 14.01 9 11.01"/>
                     </svg>
                 </div>
-                <h2 class="thank-you-title">Danke für deine Anmeldung!</h2>
-                <p class="thank-you-text">Deine Pizza- und Getränkewünsche wurden gespeichert.</p>
+                <h2 class="thank-you-title">Danke fuer deine Anmeldung!</h2>
+                <p class="thank-you-text">Deine Praeferenzen wurden gespeichert.</p>
                 <p class="thank-you-name" id="thankYouName"></p>
+                <button class="btn btn-outline" style="margin-top:24px;display:inline-flex;width:auto" onclick="editResponse()">Antwort aendern</button>
             </div>
         </div>
-        
-        <!-- Admin View -->
-        <div id="adminView" class="hidden">
-            <div class="admin-header">
-                <div class="admin-stats">
-                    <div class="stat-box highlight">
-                        <div class="stat-value" id="adminTotal">0</div>
-                        <div class="stat-label">Teilnehmer</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="adminPizzaCount">0</div>
-                        <div class="stat-label">Pizzen</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="adminDrinkLiters">0L</div>
-                        <div class="stat-label">Getränke</div>
-                    </div>
-                </div>
-                <button class="btn btn-outline" onclick="window.print()">Drucken</button>
+
+        <!-- No Config View -->
+        <div id="noConfigView" class="hidden">
+            <div class="thank-you-content">
+                <h2 class="thank-you-title">Noch nicht konfiguriert</h2>
+                <p class="thank-you-text">Dieses Event wurde noch nicht eingerichtet. Bitte den Admin kontaktieren.</p>
             </div>
-            
-            <section class="result-section">
-                <h2>Pizza-Einstellungen</h2>
-                <div class="field" style="max-width: 300px;">
-                    <label for="pizzaSize" style="font-size: 13px; color: var(--gray-600); margin-bottom: 8px; display: block;">Stücke pro Party-Pizza</label>
-                    <input type="number" id="pizzaSize" value="8" min="4" max="24" style="width: 100px; padding: 8px 12px; border: 1px solid var(--gray-300); font-size: 14px;" onchange="updatePizzaCalculation()">
-                </div>
-            </section>
-            
-            <section class="result-section">
-                <h2>Pizza-Übersicht</h2>
-                <div class="result-grid" id="pizzaResults">
-                    <!-- Filled by JS -->
-                </div>
-            </section>
-            
-            <section class="result-section">
-                <h2>Getränke-Übersicht</h2>
-                <div class="drink-list" id="drinkResults">
-                    <!-- Filled by JS -->
-                </div>
-            </section>
-            
-            <section class="result-section">
-                <h2>Snacks-Übersicht</h2>
-                <div class="drink-list" id="snackResults">
-                    <!-- Filled by JS -->
-                </div>
-            </section>
-            
-            <section>
-                <h2 id="participantsTitle">Teilnehmer (0)</h2>
-                <div class="participants-list" id="participantsList">
-                    <!-- Filled by JS -->
-                </div>
-            </section>
         </div>
     </div>
 
-    <script>
-        // Configuration
-        // To enable cloud storage: Create a bin at jsonbin.io with {"responses":[]}
-        // Then replace PLACEHOLDER_BIN_ID with the bin ID
-        const CONFIG = {
-            binId: '69850325ae596e708f142a54', // Created bin ID goes here
-            apiKey: '$2a$10$b9ndxCm6OP1TyFLhoe2jiu1C2Jp2p1Id43v18YsvM3xTwM8bePUsK', // Access key with read+update
-            expectedGuests: 30,
-            // Research-based calculations
-            slicesPerPerson: 3,
-            slicesPerPizza: 8,
-            bufferPercent: 0.15,
-            litersPerPerson: 1.5
-        };
-        
-        const DRINKS = {
-            cola: { name: 'Cola', litersPerSelection: 0.5 },
-            fanta: { name: 'Fanta', litersPerSelection: 0.4 },
-            sprite: { name: 'Sprite', litersPerSelection: 0.4 },
-            wasser: { name: 'Wasser', litersPerSelection: 0.5 },
-            apfelschorle: { name: 'Apfelschorle', litersPerSelection: 0.4 },
-            bier: { name: 'Bier', litersPerSelection: 0.5 },
-            spezi: { name: 'Spezi', litersPerSelection: 0.3 },
-            eistee: { name: 'Eistee', litersPerSelection: 0.3 }
-        };
+<script>
+// ─── Configuration ──────────────────────────────────────────────────
+const API_KEY = '__JSONBIN_API_KEY__';
+const BIN_ID = '69850325ae596e708f142a54';
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
 
-        // State
-        let responses = [];
-        const isAdmin = new URLSearchParams(window.location.search).has('admin');
-        const existingName = localStorage.getItem('pizzaPollName') || '';
+// ─── Templates ──────────────────────────────────────────────────────
+const TEMPLATES = {
+    pizza: {
+        title: 'Pizza-Abend',
+        description: 'Gemeinsamer Pizza-Abend. Welcher Termin und was moechtest du essen?',
+        food: true, drink: true, snack: true,
+        foodOptions: {
+            vegetarian: { label: 'Vegetarisch' },
+            standard: { label: 'Standard (auch Fleisch)' },
+            none: { label: 'Ich moechte nicht essen' }
+        },
+        drinkOptions: {
+            cola: { label: 'Cola', litersPerSelection: 0.5 },
+            fanta: { label: 'Fanta', litersPerSelection: 0.4 },
+            sprite: { label: 'Sprite', litersPerSelection: 0.4 },
+            wasser: { label: 'Wasser', litersPerSelection: 0.5 },
+            apfelschorle: { label: 'Apfelschorle', litersPerSelection: 0.4 },
+            bier: { label: 'Bier', litersPerSelection: 0.5 },
+            spezi: { label: 'Spezi', litersPerSelection: 0.3 },
+            eistee: { label: 'Eistee', litersPerSelection: 0.3 }
+        },
+        snackOptions: {
+            chips: { label: 'Chips' },
+            nachos: { label: 'Nachos' },
+            nuesse: { label: 'Nuesse' },
+            salzstangen: { label: 'Salzstangen' },
+            gummibaerchen: { label: 'Gummibaerchen' }
+        }
+    },
+    burger: {
+        title: 'Burger-Abend',
+        description: 'Burger-Abend! Waehle deinen Termin und deine Praeferenzen.',
+        food: true, drink: true, snack: true,
+        foodOptions: {
+            vegetarian: { label: 'Vegetarisch' },
+            classic: { label: 'Classic Burger' },
+            none: { label: 'Ich moechte nicht essen' }
+        },
+        drinkOptions: {
+            cola: { label: 'Cola', litersPerSelection: 0.5 },
+            fanta: { label: 'Fanta', litersPerSelection: 0.4 },
+            sprite: { label: 'Sprite', litersPerSelection: 0.4 },
+            wasser: { label: 'Wasser', litersPerSelection: 0.5 },
+            apfelschorle: { label: 'Apfelschorle', litersPerSelection: 0.4 },
+            bier: { label: 'Bier', litersPerSelection: 0.5 },
+            spezi: { label: 'Spezi', litersPerSelection: 0.3 },
+            eistee: { label: 'Eistee', litersPerSelection: 0.3 }
+        },
+        snackOptions: {
+            pommes: { label: 'Pommes' },
+            coleslaw: { label: 'Coleslaw' },
+            onionrings: { label: 'Onion Rings' }
+        }
+    },
+    film: {
+        title: 'Film-Abend',
+        description: 'Film-Abend! Wann passt es dir und was moechtest du trinken/snacken?',
+        food: false, drink: true, snack: true,
+        foodOptions: {},
+        drinkOptions: {
+            cola: { label: 'Cola', litersPerSelection: 0.5 },
+            sprite: { label: 'Sprite', litersPerSelection: 0.4 },
+            wasser: { label: 'Wasser', litersPerSelection: 0.5 },
+            bier: { label: 'Bier', litersPerSelection: 0.5 }
+        },
+        snackOptions: {
+            popcorn: { label: 'Popcorn' },
+            nachos: { label: 'Nachos' },
+            chips: { label: 'Chips' },
+            gummibaerchen: { label: 'Gummibaerchen' }
+        }
+    },
+    termin: {
+        title: 'Terminfindung',
+        description: 'Welcher Termin passt dir am besten?',
+        food: false, drink: false, snack: false,
+        foodOptions: {},
+        drinkOptions: {},
+        snackOptions: {}
+    },
+    custom: {
+        title: 'Eigene Konfiguration',
+        description: '',
+        food: true, drink: true, snack: true,
+        foodOptions: {
+            option1: { label: 'Option 1' },
+            option2: { label: 'Option 2' }
+        },
+        drinkOptions: {
+            option1: { label: 'Getraenk 1', litersPerSelection: 0.5 }
+        },
+        snackOptions: {
+            option1: { label: 'Snack 1' }
+        }
+    }
+};
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', async () => {
-            setupFormInteractions();
-            await loadResponses();
-            
-            if (isAdmin) {
-                document.getElementById('userView').classList.add('hidden');
-                document.getElementById('adminView').classList.remove('hidden');
-                document.querySelector('header').innerHTML = '<h1>Pizza und Getränke - Admin</h1>';
-                renderAdmin();
-            } else {
-                const hasVoted = localStorage.getItem('pizzaPollVoted') === 'true';
-                if (hasVoted && existingName) {
-                    // Show thank you view for returning voters
-                    document.getElementById('userView').classList.add('hidden');
-                    document.getElementById('thankYouView').classList.remove('hidden');
-                    document.getElementById('thankYouName').textContent = `Angemeldet als: ${existingName}`;
-                } else if (existingName) {
-                    document.getElementById('name').value = existingName;
-                    const existing = responses.find(r => r.name.toLowerCase() === existingName.toLowerCase());
-                    if (existing) {
-                        prefillForm(existing);
-                        document.getElementById('submitBtn').textContent = 'Aktualisieren';
-                    }
-                }
-            }
-            updateMeta();
+const TEMPLATE_LABELS = {
+    pizza: { title: 'Pizza-Abend', desc: 'Pizza, Getraenke, Snacks' },
+    burger: { title: 'Burger-Abend', desc: 'Burger, Getraenke, Beilagen' },
+    film: { title: 'Film-Abend', desc: 'Getraenke und Snacks' },
+    termin: { title: 'Nur Termin', desc: 'Nur Terminfindung' },
+    custom: { title: 'Eigene', desc: 'Alles anpassbar' }
+};
+
+// ─── State ──────────────────────────────────────────────────────────
+let data = { config: null, responses: [] };
+let selectedTemplate = 'pizza';
+let adminFoodOptions = {};
+let adminDrinkOptions = {};
+let adminSnackOptions = {};
+let categoryEnabled = { food: true, drink: true, snack: true };
+let selectedDates = new Set();
+
+const isAdmin = new URLSearchParams(window.location.search).has('admin');
+const storageKey = 'eventOrg_name_' + BIN_ID;
+const votedKey = 'eventOrg_voted_' + BIN_ID;
+
+// ─── API ────────────────────────────────────────────────────────────
+async function loadData() {
+    try {
+        const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}/latest`, {
+            headers: { 'X-Access-Key': API_KEY }
         });
+        if (!res.ok) throw new Error('Load failed: ' + res.status);
+        const json = await res.json();
+        data = json.record || { config: null, responses: [] };
+        if (!data.responses) data.responses = [];
+    } catch (e) {
+        console.error('Failed to load:', e);
+        data = { config: null, responses: [] };
+    }
+}
 
-        function setupFormInteractions() {
-            // Radio buttons - scope selection clearing to parent group
-            document.querySelectorAll('.radio-option').forEach(option => {
-                option.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const group = option.parentElement;
-                    group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    option.querySelector('input').checked = true;
-                    
-                    // Handle snacks show/hide
-                    const input = option.querySelector('input');
-                    if (input.name === 'wantSnacks') {
-                        const snackOptions = document.getElementById('snackOptions');
-                        if (input.value === 'yes') {
-                            snackOptions.classList.remove('hidden');
-                        } else {
-                            snackOptions.classList.add('hidden');
-                            // Clear snack selections when "no" is chosen
-                            document.querySelectorAll('#snackGroup .checkbox-option').forEach(o => {
-                                o.classList.remove('selected');
-                                o.querySelector('input').checked = false;
-                            });
-                        }
-                    }
-                });
+async function saveData() {
+    const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Access-Key': API_KEY
+        },
+        body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Save failed: ' + res.status);
+}
+
+// ─── Initialization ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadData();
+    document.getElementById('loadingView').classList.add('hidden');
+
+    if (isAdmin) {
+        initAdmin();
+    } else {
+        initUser();
+    }
+});
+
+// ─── Admin: Init ────────────────────────────────────────────────────
+function initAdmin() {
+    document.getElementById('adminView').classList.remove('hidden');
+
+    // Default start date: next Monday
+    const today = new Date();
+    const daysUntilMon = (8 - today.getDay()) % 7 || 7;
+    const nextMon = new Date(today);
+    nextMon.setDate(today.getDate() + daysUntilMon);
+    document.getElementById('cfgStartDate').value = nextMon.toISOString().split('T')[0];
+
+    renderTemplateCards();
+
+    if (data.config) {
+        loadExistingConfig(data.config);
+    } else {
+        applyTemplate('pizza');
+    }
+}
+
+function renderTemplateCards() {
+    const grid = document.getElementById('templateGrid');
+    grid.innerHTML = Object.entries(TEMPLATE_LABELS).map(([key, info]) => `
+        <div class="template-card${selectedTemplate === key ? ' selected' : ''}" data-template="${key}" onclick="selectTemplate('${key}')">
+            <div class="template-card-title">${info.title}</div>
+            <div class="template-card-desc">${info.desc}</div>
+        </div>
+    `).join('');
+}
+
+function selectTemplate(key) {
+    selectedTemplate = key;
+    renderTemplateCards();
+    applyTemplate(key);
+}
+
+function applyTemplate(key) {
+    const tpl = TEMPLATES[key];
+    if (!tpl) return;
+
+    document.getElementById('cfgTitle').value = tpl.title;
+    document.getElementById('cfgDescription').value = tpl.description;
+
+    categoryEnabled.food = tpl.food;
+    categoryEnabled.drink = tpl.drink;
+    categoryEnabled.snack = tpl.snack;
+
+    adminFoodOptions = JSON.parse(JSON.stringify(tpl.foodOptions));
+    adminDrinkOptions = JSON.parse(JSON.stringify(tpl.drinkOptions));
+    adminSnackOptions = JSON.parse(JSON.stringify(tpl.snackOptions));
+
+    updateCategoryToggles();
+    renderOptionEditors();
+}
+
+function loadExistingConfig(cfg) {
+    document.getElementById('cfgTitle').value = cfg.title || '';
+    document.getElementById('cfgDescription').value = cfg.description || '';
+    if (cfg.startDate) document.getElementById('cfgStartDate').value = cfg.startDate;
+    if (cfg.weeks) document.getElementById('cfgWeeks').value = cfg.weeks;
+    if (cfg.time) document.getElementById('cfgTime').value = cfg.time;
+
+    selectedTemplate = cfg.template || 'custom';
+    renderTemplateCards();
+
+    adminFoodOptions = cfg.foodOptions ? JSON.parse(JSON.stringify(cfg.foodOptions)) : {};
+    adminDrinkOptions = cfg.drinkOptions ? JSON.parse(JSON.stringify(cfg.drinkOptions)) : {};
+    adminSnackOptions = cfg.snackOptions ? JSON.parse(JSON.stringify(cfg.snackOptions)) : {};
+
+    categoryEnabled.food = Object.keys(adminFoodOptions).length > 0;
+    categoryEnabled.drink = Object.keys(adminDrinkOptions).length > 0;
+    categoryEnabled.snack = Object.keys(adminSnackOptions).length > 0;
+
+    if (cfg.calculationRules) {
+        document.getElementById('cfgSlicesPerPerson').value = cfg.calculationRules.slicesPerPerson || 3;
+        document.getElementById('cfgSlicesPerPizza').value = cfg.calculationRules.slicesPerPizza || 8;
+        document.getElementById('cfgBuffer').value = Math.round((cfg.calculationRules.bufferPercent || 0.15) * 100);
+        document.getElementById('cfgLitersPerPerson').value = cfg.calculationRules.litersPerPerson || 1.5;
+    }
+
+    updateCategoryToggles();
+    renderOptionEditors();
+}
+
+function updateCategoryToggles() {
+    ['food', 'drink', 'snack'].forEach(cat => {
+        const toggle = document.getElementById(cat + 'Toggle');
+        const editor = document.getElementById(cat + 'Editor');
+        if (categoryEnabled[cat]) {
+            toggle.classList.add('active');
+            editor.classList.remove('hidden');
+        } else {
+            toggle.classList.remove('active');
+            editor.classList.add('hidden');
+        }
+    });
+}
+
+function toggleCategory(cat) {
+    categoryEnabled[cat] = !categoryEnabled[cat];
+    updateCategoryToggles();
+}
+
+function renderOptionEditors() {
+    renderOptionList('food', adminFoodOptions);
+    renderOptionList('drink', adminDrinkOptions);
+    renderOptionList('snack', adminSnackOptions);
+}
+
+function renderOptionList(cat, options) {
+    const list = document.getElementById(cat + 'List');
+    const entries = Object.entries(options);
+    list.innerHTML = entries.map(([key, opt]) => `
+        <div class="editable-item">
+            <input type="text" value="${escapeHtml(opt.label)}" data-cat="${cat}" data-key="${key}" onchange="updateOptionLabel(this)">
+            <button onclick="removeOption('${cat}', '${key}')" title="Entfernen">&times;</button>
+        </div>
+    `).join('');
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function updateOptionLabel(input) {
+    const cat = input.dataset.cat;
+    const key = input.dataset.key;
+    const opts = cat === 'food' ? adminFoodOptions : cat === 'drink' ? adminDrinkOptions : adminSnackOptions;
+    if (opts[key]) opts[key].label = input.value;
+}
+
+function removeOption(cat, key) {
+    const opts = cat === 'food' ? adminFoodOptions : cat === 'drink' ? adminDrinkOptions : adminSnackOptions;
+    delete opts[key];
+    renderOptionEditors();
+}
+
+function addOption(cat) {
+    const opts = cat === 'food' ? adminFoodOptions : cat === 'drink' ? adminDrinkOptions : adminSnackOptions;
+    const id = 'opt_' + Date.now();
+    const newOpt = { label: 'Neue Option' };
+    if (cat === 'drink') newOpt.litersPerSelection = 0.5;
+    opts[id] = newOpt;
+    renderOptionEditors();
+    const list = document.getElementById(cat + 'List');
+    const inputs = list.querySelectorAll('input');
+    if (inputs.length) {
+        const last = inputs[inputs.length - 1];
+        last.focus();
+        last.select();
+    }
+}
+
+async function saveConfig() {
+    // Sync labels from DOM
+    document.querySelectorAll('.editable-item input[data-cat]').forEach(input => {
+        updateOptionLabel(input);
+    });
+
+    const config = {
+        title: document.getElementById('cfgTitle').value.trim() || 'Event',
+        description: document.getElementById('cfgDescription').value.trim(),
+        startDate: document.getElementById('cfgStartDate').value,
+        weeks: parseInt(document.getElementById('cfgWeeks').value),
+        time: document.getElementById('cfgTime').value.trim() || '17:00 Uhr',
+        template: selectedTemplate,
+        foodOptions: categoryEnabled.food ? adminFoodOptions : {},
+        drinkOptions: categoryEnabled.drink ? adminDrinkOptions : {},
+        snackOptions: categoryEnabled.snack ? adminSnackOptions : {},
+        calculationRules: {
+            slicesPerPerson: parseInt(document.getElementById('cfgSlicesPerPerson').value) || 3,
+            slicesPerPizza: parseInt(document.getElementById('cfgSlicesPerPizza').value) || 8,
+            bufferPercent: (parseInt(document.getElementById('cfgBuffer').value) || 15) / 100,
+            litersPerPerson: parseFloat(document.getElementById('cfgLitersPerPerson').value) || 1.5
+        }
+    };
+
+    if (!config.startDate) {
+        showAdminMessage('Bitte Startdatum setzen.', 'error');
+        return;
+    }
+
+    data.config = config;
+
+    try {
+        await saveData();
+        showAdminMessage('Konfiguration gespeichert!', 'success');
+    } catch (e) {
+        showAdminMessage('Fehler beim Speichern: ' + e.message, 'error');
+    }
+}
+
+function switchAdminTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+    document.getElementById('adminConfigTab').classList.toggle('hidden', tab !== 'config');
+    document.getElementById('adminResultsTab').classList.toggle('hidden', tab !== 'results');
+    if (tab === 'results') renderResults();
+}
+
+function copyShareLink() {
+    const url = window.location.origin + window.location.pathname;
+    navigator.clipboard.writeText(url).then(() => {
+        showAdminMessage('Link kopiert!', 'success');
+    });
+}
+
+function showAdminMessage(text, type) {
+    const msg = document.getElementById('adminMessage');
+    msg.textContent = text;
+    msg.className = `message ${type}`;
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 5000);
+}
+
+// ─── Admin: Results ─────────────────────────────────────────────────
+function renderResults() {
+    const cfg = data.config;
+    const responses = data.responses || [];
+
+    if (!cfg) {
+        document.getElementById('adminStats').innerHTML = '<p style="color:var(--gray-500)">Noch keine Konfiguration.</p>';
+        return;
+    }
+
+    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+    const hasSnacks = cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
+    const rules = cfg.calculationRules || {};
+
+    // Stats bar
+    let statsHtml = `
+        <div class="stat-box highlight">
+            <div class="stat-value">${responses.length}</div>
+            <div class="stat-label">Teilnehmer</div>
+        </div>`;
+
+    if (hasFood) {
+        const eaters = responses.filter(r => r.food && r.food !== 'none').length;
+        const slicesPerPerson = rules.slicesPerPerson || 3;
+        const slicesPerPizza = rules.slicesPerPizza || 8;
+        const buffer = rules.bufferPercent || 0.15;
+        const totalPizzas = eaters > 0 ? Math.ceil(eaters * slicesPerPerson / slicesPerPizza * (1 + buffer)) : 0;
+        statsHtml += `<div class="stat-box"><div class="stat-value">${totalPizzas}</div><div class="stat-label">Pizzen</div></div>`;
+    }
+
+    if (hasDrinks) {
+        let totalLiters = 0;
+        responses.forEach(r => {
+            (r.drinks || []).forEach(d => {
+                totalLiters += (cfg.drinkOptions[d]?.litersPerSelection || 0.5);
             });
-            
-            // Checkboxes
-            document.querySelectorAll('.checkbox-option').forEach(option => {
-                option.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    option.classList.toggle('selected');
-                    const input = option.querySelector('input');
-                    input.checked = !input.checked;
-                });
-            });
-        }
+        });
+        const minTotal = responses.length * (rules.litersPerPerson || 1.5);
+        if (totalLiters < minTotal) totalLiters = minTotal;
+        statsHtml += `<div class="stat-box"><div class="stat-value">${Math.ceil(totalLiters)}L</div><div class="stat-label">Getraenke</div></div>`;
+    }
 
-        function prefillForm(data) {
-            // Pizza
-            const pizzaOption = document.querySelector(`#pizzaGroup .radio-option[data-value="${data.pizza}"]`);
-            if (pizzaOption) {
-                pizzaOption.classList.add('selected');
-                pizzaOption.querySelector('input').checked = true;
-            }
-            
-            // Drinks
-            data.drinks.forEach(drink => {
-                const drinkOption = document.querySelector(`#drinkGroup .checkbox-option[data-value="${drink}"]`);
-                if (drinkOption) {
-                    drinkOption.classList.add('selected');
-                    drinkOption.querySelector('input').checked = true;
+    document.getElementById('adminStats').innerHTML = statsHtml;
+
+    // Date Ranking
+    const dateCounts = {};
+    responses.forEach(r => {
+        (r.dates || []).forEach(d => {
+            dateCounts[d] = (dateCounts[d] || 0) + 1;
+        });
+    });
+    const sortedDates = Object.entries(dateCounts).sort((a, b) => b[1] - a[1]);
+    const maxCount = sortedDates.length > 0 ? sortedDates[0][1] : 1;
+    const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+
+    document.getElementById('dateRanking').innerHTML = sortedDates.length > 0
+        ? sortedDates.map(([date, count], i) => {
+            const d = new Date(date + 'T12:00:00');
+            const label = `${dayNames[d.getDay()]}, ${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`;
+            return `<div class="date-rank">
+                <span class="date-rank-pos">${i+1}</span>
+                <span class="date-rank-label">${label}</span>
+                <div class="date-rank-bar"><div class="date-rank-bar-fill" style="width:${count/maxCount*100}%"></div></div>
+                <span class="date-rank-count">${count}/${responses.length}</span>
+            </div>`;
+        }).join('')
+        : '<p style="color:var(--gray-500)">Keine Termindaten</p>';
+
+    // Food Results
+    if (hasFood) {
+        document.getElementById('resultFoodSection').classList.remove('hidden');
+        const foodCounts = {};
+        Object.keys(cfg.foodOptions).forEach(k => foodCounts[k] = 0);
+        responses.forEach(r => { if (r.food && foodCounts[r.food] !== undefined) foodCounts[r.food]++; });
+
+        const eaters = responses.filter(r => r.food && r.food !== 'none').length;
+        const totalPizzas = eaters > 0
+            ? Math.ceil(eaters * (rules.slicesPerPerson || 3) / (rules.slicesPerPizza || 8) * (1 + (rules.bufferPercent || 0.15)))
+            : 0;
+
+        document.getElementById('foodResults').innerHTML = Object.entries(foodCounts)
+            .filter(([_, c]) => c > 0)
+            .map(([key, count]) => {
+                const label = cfg.foodOptions[key]?.label || key;
+                const isEater = key !== 'none';
+                let pizzaCount = '';
+                if (isEater && eaters > 0) {
+                    pizzaCount = Math.ceil(totalPizzas * (count / eaters)) + ' Pizzen';
                 }
-            });
-            
-            // Snacks
-            if (data.snacks && data.snacks.length > 0) {
-                const snacksYes = document.querySelector('#snacksWantGroup .radio-option[data-value="yes"]');
-                if (snacksYes) {
-                    snacksYes.classList.add('selected');
-                    snacksYes.querySelector('input').checked = true;
-                }
-                document.getElementById('snackOptions').classList.remove('hidden');
-                data.snacks.forEach(snack => {
-                    const snackOption = document.querySelector(`#snackGroup .checkbox-option[data-value="${snack}"]`);
-                    if (snackOption) {
-                        snackOption.classList.add('selected');
-                        snackOption.querySelector('input').checked = true;
-                    }
-                });
-            } else {
-                const snacksNo = document.querySelector('#snacksWantGroup .radio-option[data-value="no"]');
-                if (snacksNo) {
-                    snacksNo.classList.add('selected');
-                    snacksNo.querySelector('input').checked = true;
-                }
-            }
-            
-            // Restrictions
-            if (data.restrictions) {
-                document.getElementById('restrictions').value = data.restrictions;
-            }
-        }
+                return `<div class="result-card">
+                    <div class="result-card-label">${label}</div>
+                    <div class="result-card-value">${isEater ? pizzaCount : '-'}</div>
+                    <div class="result-card-detail">${count} Personen</div>
+                </div>`;
+            }).join('');
+    } else {
+        document.getElementById('resultFoodSection').classList.add('hidden');
+    }
 
-        async function loadResponses() {
-            if (CONFIG.binId === 'PLACEHOLDER_BIN_ID') {
-                console.warn('No bin ID configured - using localStorage fallback');
-                responses = JSON.parse(localStorage.getItem('pizzaPollResponses') || '[]');
-                return;
-            }
-            
-            try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.binId}/latest`, {
-                    headers: { 'X-Access-Key': CONFIG.apiKey }
-                });
-                const data = await res.json();
-                responses = data.record?.responses || [];
-            } catch (e) {
-                console.error('Failed to load responses:', e);
-                responses = [];
-            }
-        }
+    // Drink Results
+    if (hasDrinks) {
+        document.getElementById('resultDrinkSection').classList.remove('hidden');
+        const drinkCounts = {};
+        Object.keys(cfg.drinkOptions).forEach(k => drinkCounts[k] = 0);
+        responses.forEach(r => (r.drinks || []).forEach(d => { if (drinkCounts[d] !== undefined) drinkCounts[d]++; }));
 
-        async function saveResponses() {
-            if (CONFIG.binId === 'PLACEHOLDER_BIN_ID') {
-                localStorage.setItem('pizzaPollResponses', JSON.stringify(responses));
-                return;
-            }
-            
-            try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.binId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Access-Key': CONFIG.apiKey
-                    },
-                    body: JSON.stringify({ responses, updated: new Date().toISOString() })
-                });
-                if (!res.ok) throw new Error('Save failed');
-            } catch (e) {
-                console.error('Failed to save responses:', e);
-                throw e;
-            }
-        }
+        let totalLiters = 0;
+        const drinkLiters = {};
+        Object.entries(drinkCounts).forEach(([d, c]) => {
+            const l = c * (cfg.drinkOptions[d]?.litersPerSelection || 0.5);
+            drinkLiters[d] = l;
+            totalLiters += l;
+        });
+        const minTotal = responses.length * (rules.litersPerPerson || 1.5);
+        const mult = totalLiters > 0 && totalLiters < minTotal ? minTotal / totalLiters : 1;
 
-        function updateMeta() {
-            document.getElementById('responseCount').textContent = `${responses.length} Anmeldungen`;
-        }
+        const sorted = Object.entries(drinkCounts).sort((a, b) => b[1] - a[1]).filter(([_, c]) => c > 0);
+        document.getElementById('drinkResults').innerHTML = sorted.length > 0
+            ? sorted.map(([d, count]) => `
+                <div class="item-row">
+                    <span class="item-name">${cfg.drinkOptions[d]?.label || d}</span>
+                    <span class="item-stats">
+                        <span class="item-count">${count}x</span>
+                        <span class="item-detail">ca. ${Math.ceil(drinkLiters[d] * mult)}L</span>
+                    </span>
+                </div>`).join('')
+            : '<p style="color:var(--gray-500)">Keine Daten</p>';
+    } else {
+        document.getElementById('resultDrinkSection').classList.add('hidden');
+    }
 
-        // Form submission
-        document.getElementById('pollForm').addEventListener('submit', async (e) => {
+    // Snack Results
+    if (hasSnacks) {
+        document.getElementById('resultSnackSection').classList.remove('hidden');
+        const snackCounts = {};
+        Object.keys(cfg.snackOptions).forEach(k => snackCounts[k] = 0);
+        responses.forEach(r => (r.snacks || []).forEach(s => { if (snackCounts[s] !== undefined) snackCounts[s]++; }));
+
+        const sorted = Object.entries(snackCounts).sort((a, b) => b[1] - a[1]).filter(([_, c]) => c > 0);
+        document.getElementById('snackResults').innerHTML = sorted.length > 0
+            ? sorted.map(([s, count]) => `
+                <div class="item-row">
+                    <span class="item-name">${cfg.snackOptions[s]?.label || s}</span>
+                    <span class="item-stats"><span class="item-count">${count}x</span></span>
+                </div>`).join('')
+            : '<p style="color:var(--gray-500)">Keine Daten</p>';
+    } else {
+        document.getElementById('resultSnackSection').classList.add('hidden');
+    }
+
+    // Participants
+    document.getElementById('participantsTitle').textContent = `Teilnehmer (${responses.length})`;
+    const sortedR = [...responses].sort((a, b) => a.name.localeCompare(b.name));
+    document.getElementById('participantsList').innerHTML = sortedR.length > 0
+        ? sortedR.map(r => {
+            const foodLabel = hasFood && r.food && cfg.foodOptions[r.food] ? cfg.foodOptions[r.food].label : '';
+            const foodClass = r.food === 'none' ? 'none' : r.food === 'vegetarian' ? 'vegetarian' : 'standard';
+            const drinksLabel = (r.drinks || []).map(d => cfg.drinkOptions?.[d]?.label || d).join(', ');
+            const snacksLabel = (r.snacks || []).map(s => cfg.snackOptions?.[s]?.label || s).join(', ');
+            const datesLabel = (r.dates || []).map(d => {
+                const dt = new Date(d + 'T12:00:00');
+                return `${dt.getDate()}.${dt.getMonth()+1}.`;
+            }).join(', ');
+
+            return `<div class="participant-item">
+                <span class="participant-name">${escapeHtml(r.name)}</span>
+                ${foodLabel ? `<span class="participant-badge ${foodClass}">${foodLabel}</span>` : '<span></span>'}
+                <span style="font-size:12px;color:var(--gray-500)">${datesLabel}</span>
+                ${drinksLabel ? `<span class="participant-details">Getraenke: ${drinksLabel}</span>` : ''}
+                ${snacksLabel ? `<span class="participant-details">Snacks: ${snacksLabel}</span>` : ''}
+                ${r.restrictions ? `<span class="participant-details">Hinweis: ${escapeHtml(r.restrictions)}</span>` : ''}
+            </div>`;
+        }).join('')
+        : '<p style="color:var(--gray-500)">Noch keine Anmeldungen</p>';
+}
+
+// ─── User: Init ─────────────────────────────────────────────────────
+function initUser() {
+    if (!data.config) {
+        document.getElementById('noConfigView').classList.remove('hidden');
+        return;
+    }
+
+    const cfg = data.config;
+    document.getElementById('userView').classList.remove('hidden');
+
+    // Header
+    document.getElementById('eventTitle').textContent = cfg.title || 'Event';
+    document.getElementById('eventDescription').textContent = cfg.description || '';
+    document.title = cfg.title || 'Event Organizer';
+
+    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+    const hasSnacks = cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
+
+    let infoHtml = `<strong>Uhrzeit: ${cfg.time || '17:00 Uhr'}</strong>`;
+    if (hasFood) {
+        const rules = cfg.calculationRules || {};
+        infoHtml += `Richtwerte: ${rules.slicesPerPerson || 3} Stuecke Pizza, ca. ${rules.litersPerPerson || 1.5}L Getraenke pro Person`;
+    }
+    document.getElementById('eventInfoBox').innerHTML = infoHtml;
+
+    document.getElementById('responseCount').textContent = `${data.responses.length} Anmeldungen`;
+
+    // Date grid
+    document.getElementById('dateHint').textContent = `Waehle alle Tage, an denen du kannst (${cfg.time || '17:00 Uhr'})`;
+    renderDateGrid(cfg.startDate, cfg.weeks || 3);
+
+    // Food
+    if (hasFood) {
+        document.getElementById('userFoodSection').classList.remove('hidden');
+        document.getElementById('foodGroup').innerHTML = Object.entries(cfg.foodOptions).map(([key, opt]) => `
+            <label class="radio-option" data-value="${key}">
+                <input type="radio" name="food" value="${key}">
+                <span class="radio-indicator"></span>
+                <span class="radio-label">${escapeHtml(opt.label)}</span>
+            </label>
+        `).join('');
+    }
+
+    // Drinks
+    if (hasDrinks) {
+        document.getElementById('userDrinkSection').classList.remove('hidden');
+        document.getElementById('drinkGroup').innerHTML = Object.entries(cfg.drinkOptions).map(([key, opt]) => `
+            <label class="checkbox-option" data-value="${key}">
+                <input type="checkbox" name="drinks" value="${key}">
+                <span class="checkbox-indicator"></span>
+                <span class="checkbox-label">${escapeHtml(opt.label)}</span>
+            </label>
+        `).join('');
+    }
+
+    // Snacks
+    if (hasSnacks) {
+        document.getElementById('userSnackSection').classList.remove('hidden');
+        document.getElementById('snackGroup').innerHTML = Object.entries(cfg.snackOptions).map(([key, opt]) => `
+            <label class="checkbox-option" data-value="${key}">
+                <input type="checkbox" name="snacks" value="${key}">
+                <span class="checkbox-indicator"></span>
+                <span class="checkbox-label">${escapeHtml(opt.label)}</span>
+            </label>
+        `).join('');
+    }
+
+    setupFormInteractions();
+
+    // Returning voter
+    const existingName = localStorage.getItem(storageKey) || '';
+    const hasVoted = localStorage.getItem(votedKey) === 'true';
+
+    if (hasVoted && existingName) {
+        showThankYou(existingName);
+    } else if (existingName) {
+        document.getElementById('userName').value = existingName;
+        const existing = data.responses.find(r => r.name.toLowerCase() === existingName.toLowerCase());
+        if (existing) {
+            prefillForm(existing);
+            document.getElementById('submitBtn').textContent = 'Aktualisieren';
+        }
+    }
+}
+
+function renderDateGrid(startDate, weeks) {
+    const grid = document.getElementById('dateGrid');
+    const start = new Date(startDate + 'T12:00:00');
+    const dayLabels = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
+    const monthNames = ['Jan', 'Feb', 'Maer', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+    // Align to Monday
+    const dow = start.getDay();
+    const monOffset = dow === 0 ? 1 : dow === 1 ? 0 : -(dow - 1);
+    const monday = new Date(start);
+    monday.setDate(start.getDate() + monOffset);
+
+    let html = dayLabels.map(d => `<div class="date-grid-header">${d}</div>`).join('');
+
+    for (let w = 0; w < weeks; w++) {
+        for (let d = 0; d < 5; d++) {
+            const date = new Date(monday);
+            date.setDate(monday.getDate() + w * 7 + d);
+            const iso = date.toISOString().split('T')[0];
+            const day = date.getDate();
+            const mon = monthNames[date.getMonth()];
+            html += `<div class="date-cell" data-date="${iso}" onclick="toggleDate(this)">
+                <div class="date-day">${day}</div>
+                <div class="date-month">${mon}</div>
+            </div>`;
+        }
+    }
+
+    grid.innerHTML = html;
+}
+
+function toggleDate(cell) {
+    const date = cell.dataset.date;
+    if (selectedDates.has(date)) {
+        selectedDates.delete(date);
+        cell.classList.remove('selected');
+    } else {
+        selectedDates.add(date);
+        cell.classList.add('selected');
+    }
+}
+
+function setupFormInteractions() {
+    document.querySelectorAll('#userView .radio-option').forEach(option => {
+        option.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            const name = document.getElementById('name').value.trim();
-            const pizzaInput = document.querySelector('input[name="pizza"]:checked');
-            const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
-            const wantSnacksInput = document.querySelector('input[name="wantSnacks"]:checked');
-            const snackInputs = document.querySelectorAll('input[name="snacks"]:checked');
-            const restrictions = document.getElementById('restrictions').value.trim();
-            
-            if (!name) {
-                showMessage('Bitte gib deinen Namen ein.', 'error');
-                return;
-            }
-            
-            if (!pizzaInput) {
-                showMessage('Bitte wähle eine Pizza-Präferenz.', 'error');
-                return;
-            }
-            
-            if (drinkInputs.length === 0) {
-                showMessage('Bitte wähle mindestens ein Getränk.', 'error');
-                return;
-            }
-            
-            if (!wantSnacksInput) {
-                showMessage('Bitte gib an, ob du Snacks möchtest.', 'error');
-                return;
-            }
-            
-            if (wantSnacksInput.value === 'yes' && snackInputs.length === 0) {
-                showMessage('Bitte wähle mindestens einen Snack.', 'error');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Speichern...';
-            
-            try {
-                await loadResponses();
-                
-                const responseData = {
-                    name,
-                    pizza: pizzaInput.value,
-                    drinks: Array.from(drinkInputs).map(i => i.value),
-                    snacks: wantSnacksInput.value === 'yes' ? Array.from(snackInputs).map(i => i.value) : [],
-                    restrictions: restrictions || null,
-                    timestamp: new Date().toISOString()
-                };
-                
-                const existingIdx = responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
-                if (existingIdx >= 0) {
-                    responses[existingIdx] = responseData;
-                } else {
-                    responses.push(responseData);
-                }
-                
-                await saveResponses();
-                
-                localStorage.setItem('pizzaPollName', name);
-                localStorage.setItem('pizzaPollVoted', 'true');
-                
-                // Show thank you view
-                document.getElementById('userView').classList.add('hidden');
-                document.getElementById('thankYouView').classList.remove('hidden');
-                document.getElementById('thankYouName').textContent = `Angemeldet als: ${name}`;
-            } catch (err) {
-                showMessage('Fehler beim Speichern. Bitte erneut versuchen.', 'error');
-            }
-            
-            submitBtn.disabled = false;
+            const group = option.parentElement;
+            group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            option.querySelector('input').checked = true;
         });
+    });
 
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = `message ${type}`;
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
-        }
+    document.querySelectorAll('#userView .checkbox-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.preventDefault();
+            option.classList.toggle('selected');
+            const input = option.querySelector('input');
+            input.checked = !input.checked;
+        });
+    });
+}
 
-        // Admin calculations
-        function calculatePizzas(slicesPerPizza = null) {
-            const counts = { vegetarian: 0, standard: 0, none: 0 };
-            responses.forEach(r => counts[r.pizza]++);
-            
-            // Only count people who want to eat
-            const eaters = counts.vegetarian + counts.standard;
-            
-            // Get pizza size from input or use default
-            const pizzaSize = slicesPerPizza || (document.getElementById('pizzaSize')?.value || CONFIG.slicesPerPizza);
-            
-            const totalSlices = eaters * CONFIG.slicesPerPerson;
-            const totalPizzas = Math.ceil(totalSlices / pizzaSize * (1 + CONFIG.bufferPercent));
-            
-            const vegRatio = eaters > 0 ? counts.vegetarian / eaters : 0.5;
-            const vegPizzas = Math.ceil(totalPizzas * vegRatio);
-            const stdPizzas = totalPizzas - vegPizzas;
-            
-            return {
-                counts,
-                vegPizzas,
-                stdPizzas,
-                totalPizzas,
-                eaters
-            };
-        }
-        
-        function updatePizzaCalculation() {
-            if (typeof renderAdmin === 'function') {
-                renderAdmin();
-            }
-        }
+function prefillForm(response) {
+    (response.dates || []).forEach(d => {
+        selectedDates.add(d);
+        const cell = document.querySelector(`.date-cell[data-date="${d}"]`);
+        if (cell) cell.classList.add('selected');
+    });
 
-        function calculateDrinks() {
-            const drinkCounts = {};
-            Object.keys(DRINKS).forEach(d => drinkCounts[d] = 0);
-            
-            responses.forEach(r => {
-                r.drinks.forEach(d => {
-                    if (drinkCounts[d] !== undefined) drinkCounts[d]++;
-                });
-            });
-            
-            // Calculate liters based on selections
-            const drinkLiters = {};
-            let totalLiters = 0;
-            
-            Object.entries(drinkCounts).forEach(([drink, count]) => {
-                const liters = count * DRINKS[drink].litersPerSelection;
-                drinkLiters[drink] = Math.ceil(liters);
-                totalLiters += liters;
-            });
-            
-            // Ensure minimum per person
-            const minTotal = responses.length * CONFIG.litersPerPerson;
-            const multiplier = totalLiters > 0 && totalLiters < minTotal ? minTotal / totalLiters : 1;
-            
-            Object.keys(drinkLiters).forEach(d => {
-                drinkLiters[d] = Math.ceil(drinkLiters[d] * multiplier);
-            });
-            
-            return {
-                counts: drinkCounts,
-                liters: drinkLiters,
-                totalLiters: Math.ceil(Object.values(drinkLiters).reduce((a, b) => a + b, 0))
-            };
-        }
-        
-        const SNACKS = {
-            chips: 'Chips',
-            nachos: 'Nachos',
-            nuesse: 'Nüsse',
-            salzstangen: 'Salzstangen',
-            gummibaerchen: 'Gummibärchen'
+    if (response.food) {
+        const opt = document.querySelector(`#foodGroup .radio-option[data-value="${response.food}"]`);
+        if (opt) { opt.classList.add('selected'); opt.querySelector('input').checked = true; }
+    }
+
+    (response.drinks || []).forEach(d => {
+        const opt = document.querySelector(`#drinkGroup .checkbox-option[data-value="${d}"]`);
+        if (opt) { opt.classList.add('selected'); opt.querySelector('input').checked = true; }
+    });
+
+    (response.snacks || []).forEach(s => {
+        const opt = document.querySelector(`#snackGroup .checkbox-option[data-value="${s}"]`);
+        if (opt) { opt.classList.add('selected'); opt.querySelector('input').checked = true; }
+    });
+
+    if (response.restrictions) {
+        document.getElementById('restrictions').value = response.restrictions;
+    }
+}
+
+// ─── Form Submission ────────────────────────────────────────────────
+document.getElementById('pollForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const cfg = data.config;
+    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+
+    const name = document.getElementById('userName').value.trim();
+    if (!name) { showMessage('Bitte gib deinen Namen ein.', 'error'); return; }
+    if (selectedDates.size === 0) { showMessage('Bitte waehle mindestens einen Termin.', 'error'); return; }
+
+    const foodInput = document.querySelector('input[name="food"]:checked');
+    if (hasFood && !foodInput) { showMessage('Bitte waehle eine Essen-Praeferenz.', 'error'); return; }
+
+    const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
+    if (hasDrinks && drinkInputs.length === 0) { showMessage('Bitte waehle mindestens ein Getraenk.', 'error'); return; }
+
+    const snackInputs = document.querySelectorAll('input[name="snacks"]:checked');
+    const restrictions = document.getElementById('restrictions').value.trim();
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Speichern...';
+
+    try {
+        await loadData();
+
+        const responseData = {
+            name,
+            dates: Array.from(selectedDates).sort(),
+            food: foodInput ? foodInput.value : null,
+            drinks: Array.from(drinkInputs).map(i => i.value),
+            snacks: Array.from(snackInputs).map(i => i.value),
+            restrictions: restrictions || null,
+            timestamp: new Date().toISOString()
         };
-        
-        function calculateSnacks() {
-            const counts = {};
-            Object.keys(SNACKS).forEach(s => counts[s] = 0);
-            let wantSnacks = 0;
-            
-            responses.forEach(r => {
-                if (r.snacks && r.snacks.length > 0) {
-                    wantSnacks++;
-                    r.snacks.forEach(s => {
-                        if (counts[s] !== undefined) counts[s]++;
-                    });
-                }
-            });
-            
-            return { counts, wantSnacks };
+
+        const existingIdx = data.responses.findIndex(r => r.name.toLowerCase() === name.toLowerCase());
+        if (existingIdx >= 0) {
+            data.responses[existingIdx] = responseData;
+        } else {
+            data.responses.push(responseData);
         }
 
-        function renderAdmin() {
-            const pizza = calculatePizzas();
-            const drinks = calculateDrinks();
-            const snacks = calculateSnacks();
-            
-            // Stats
-            document.getElementById('adminTotal').textContent = responses.length;
-            document.getElementById('adminPizzaCount').textContent = pizza.totalPizzas;
-            document.getElementById('adminDrinkLiters').textContent = drinks.totalLiters + 'L';
-            
-            // Pizza results
-            const pizzaHtml = `
-                <div class="result-card">
-                    <div class="result-card-label">Vegetarisch</div>
-                    <div class="result-card-value">${pizza.vegPizzas} Pizzen</div>
-                    <div class="result-card-detail">${pizza.counts.vegetarian} Personen</div>
-                </div>
-                <div class="result-card">
-                    <div class="result-card-label">Standard</div>
-                    <div class="result-card-value">${pizza.stdPizzas} Pizzen</div>
-                    <div class="result-card-detail">${pizza.counts.standard} Personen</div>
-                </div>
-                ${pizza.counts.none > 0 ? `
-                <div class="result-card">
-                    <div class="result-card-label">Isst nicht</div>
-                    <div class="result-card-value">-</div>
-                    <div class="result-card-detail">${pizza.counts.none} Personen</div>
-                </div>
-                ` : ''}
-            `;
-            document.getElementById('pizzaResults').innerHTML = pizzaHtml;
-            
-            // Drink results - sorted by count
-            const sortedDrinks = Object.entries(drinks.counts)
-                .sort((a, b) => b[1] - a[1])
-                .filter(([_, count]) => count > 0);
-            
-            const drinksHtml = sortedDrinks.map(([drink, count]) => `
-                <div class="drink-item">
-                    <span class="drink-name">${DRINKS[drink].name}</span>
-                    <span class="drink-stats">
-                        <span class="drink-count">${count}x</span>
-                        <span class="drink-liters">ca. ${drinks.liters[drink]}L</span>
-                    </span>
-                </div>
-            `).join('') || '<p style="color: var(--gray-500)">Keine Daten</p>';
-            document.getElementById('drinkResults').innerHTML = drinksHtml;
-            
-            // Snack results - sorted by count
-            const sortedSnacks = Object.entries(snacks.counts)
-                .sort((a, b) => b[1] - a[1])
-                .filter(([_, count]) => count > 0);
-            
-            const snacksHtml = sortedSnacks.length > 0 ? sortedSnacks.map(([snack, count]) => `
-                <div class="drink-item">
-                    <span class="drink-name">${SNACKS[snack]}</span>
-                    <span class="drink-stats">
-                        <span class="drink-count">${count}x gewünscht</span>
-                    </span>
-                </div>
-            `).join('') : `<p style="color: var(--gray-500)">${snacks.wantSnacks} von ${responses.length} möchten Snacks</p>`;
-            document.getElementById('snackResults').innerHTML = snacksHtml;
-            
-            // Participants
-            document.getElementById('participantsTitle').textContent = `Teilnehmer (${responses.length})`;
-            
-            const sortedResponses = [...responses].sort((a, b) => a.name.localeCompare(b.name));
-            const participantsHtml = sortedResponses.map(r => {
-                const pizzaClass = r.pizza === 'vegetarian' ? 'vegetarian' : r.pizza === 'standard' ? 'standard' : 'none';
-                const pizzaLabel = r.pizza === 'vegetarian' ? 'Vegetarisch' : r.pizza === 'standard' ? 'Standard' : 'Isst nicht';
-                const drinksLabel = r.drinks.map(d => DRINKS[d]?.name || d).join(', ');
-                const snacksLabel = r.snacks && r.snacks.length > 0 ? r.snacks.map(s => SNACKS[s] || s).join(', ') : '';
-                
-                return `
-                    <div class="participant-item">
-                        <span class="participant-name">${r.name}</span>
-                        <span class="participant-pizza ${pizzaClass}">${pizzaLabel}</span>
-                        <span style="font-size: 12px; color: var(--gray-500)">${drinksLabel}</span>
-                        ${snacksLabel ? `<span style="font-size: 12px; color: var(--gray-500)">Snacks: ${snacksLabel}</span>` : ''}
-                        ${r.restrictions ? `<span class="participant-restrictions">Hinweis: ${r.restrictions}</span>` : ''}
-                    </div>
-                `;
-            }).join('') || '<p style="color: var(--gray-500)">Noch keine Anmeldungen</p>';
-            document.getElementById('participantsList').innerHTML = participantsHtml;
-        }
-    </script>
+        await saveData();
+
+        localStorage.setItem(storageKey, name);
+        localStorage.setItem(votedKey, 'true');
+
+        showThankYou(name);
+    } catch (err) {
+        showMessage('Fehler beim Speichern. Bitte erneut versuchen.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Absenden';
+    }
+});
+
+function showThankYou(name) {
+    document.getElementById('userView').classList.add('hidden');
+    document.getElementById('thankYouView').classList.remove('hidden');
+    document.getElementById('thankYouName').textContent = `Angemeldet als: ${name}`;
+}
+
+function editResponse() {
+    localStorage.removeItem(votedKey);
+    document.getElementById('thankYouView').classList.add('hidden');
+    document.getElementById('userView').classList.remove('hidden');
+    document.getElementById('submitBtn').textContent = 'Aktualisieren';
+}
+
+function showMessage(text, type) {
+    const msg = document.getElementById('message');
+    msg.textContent = text;
+    msg.className = `message ${type}`;
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 5000);
+}
+</script>
 </body>
 </html>
