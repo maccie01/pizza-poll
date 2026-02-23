@@ -584,6 +584,30 @@
                     <div class="item-list" id="dateRanking"></div>
                 </section>
 
+                <section id="resultCalcSection">
+                    <h2>Berechnungsregeln anpassen</h2>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="resSlicesPerPerson">Stücke pro Person</label>
+                            <input type="number" id="resSlicesPerPerson" min="1" max="10" onchange="updateCalcRules()">
+                        </div>
+                        <div class="field">
+                            <label for="resSlicesPerPizza">Stücke pro Pizza</label>
+                            <input type="number" id="resSlicesPerPizza" min="4" max="24" onchange="updateCalcRules()">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="resBuffer">Puffer (%)</label>
+                            <input type="number" id="resBuffer" min="0" max="50" onchange="updateCalcRules()">
+                        </div>
+                        <div class="field">
+                            <label for="resLitersPerPerson">Liter pro Person</label>
+                            <input type="number" id="resLitersPerPerson" min="0.5" max="5" step="0.1" onchange="updateCalcRules()">
+                        </div>
+                    </div>
+                </section>
+
                 <section id="resultFoodSection">
                     <h2>Essen-Übersicht</h2>
                     <div class="result-grid" id="foodResults"></div>
@@ -1048,9 +1072,10 @@ async function saveConfig() {
         return;
     }
 
-    data.config = config;
-
     try {
+        // Reload to preserve any responses added since page load
+        await loadData();
+        data.config = config;
         await saveData();
         showAdminMessage('Konfiguration gespeichert!', 'success');
     } catch (e) {
@@ -1058,12 +1083,15 @@ async function saveConfig() {
     }
 }
 
-function switchAdminTab(tab) {
+async function switchAdminTab(tab) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
     document.getElementById('adminConfigTab').classList.toggle('hidden', tab !== 'config');
     document.getElementById('adminResultsTab').classList.toggle('hidden', tab !== 'results');
-    if (tab === 'results') renderResults();
+    if (tab === 'results') {
+        await loadData(); // Refresh to get latest responses
+        renderResults();
+    }
 }
 
 function copyShareLink() {
@@ -1081,8 +1109,27 @@ function showAdminMessage(text, type) {
     setTimeout(() => msg.classList.add('hidden'), 5000);
 }
 
+async function updateCalcRules() {
+    if (!data.config) return;
+    data.config.calculationRules = {
+        slicesPerPerson: parseInt(document.getElementById('resSlicesPerPerson').value) ?? 3,
+        slicesPerPizza: parseInt(document.getElementById('resSlicesPerPizza').value) ?? 8,
+        bufferPercent: (parseInt(document.getElementById('resBuffer').value) ?? 15) / 100,
+        litersPerPerson: parseFloat(document.getElementById('resLitersPerPerson').value) ?? 1.5
+    };
+    // Also sync to config tab inputs
+    document.getElementById('cfgSlicesPerPerson').value = data.config.calculationRules.slicesPerPerson;
+    document.getElementById('cfgSlicesPerPizza').value = data.config.calculationRules.slicesPerPizza;
+    document.getElementById('cfgBuffer').value = Math.round(data.config.calculationRules.bufferPercent * 100);
+    document.getElementById('cfgLitersPerPerson').value = data.config.calculationRules.litersPerPerson;
+    // Re-render results with new rules
+    renderResults(true);
+    // Save silently
+    try { await saveData(); } catch (e) { console.error('Auto-save failed:', e); }
+}
+
 // ─── Admin: Results ─────────────────────────────────────────────────
-function renderResults() {
+function renderResults(skipCalcPopulate) {
     const cfg = data.config;
     const responses = data.responses || [];
 
@@ -1095,6 +1142,18 @@ function renderResults() {
     const hasFood = (ce.food !== false) && cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
     const hasDrinks = (ce.drink !== false) && cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
     const hasSnacks = (ce.snack !== false) && cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
+
+    // Populate calc rule inputs (only on initial render, not from updateCalcRules)
+    if (!skipCalcPopulate) {
+        const cr = cfg.calculationRules || {};
+        document.getElementById('resSlicesPerPerson').value = cr.slicesPerPerson ?? 3;
+        document.getElementById('resSlicesPerPizza').value = cr.slicesPerPizza ?? 8;
+        document.getElementById('resBuffer').value = Math.round((cr.bufferPercent ?? 0.15) * 100);
+        document.getElementById('resLitersPerPerson').value = cr.litersPerPerson ?? 1.5;
+    }
+
+    // Show/hide calc section based on whether food or drinks are enabled
+    document.getElementById('resultCalcSection').classList.toggle('hidden', !hasFood && !hasDrinks);
     const rules = cfg.calculationRules || {};
 
     // Stats bar
