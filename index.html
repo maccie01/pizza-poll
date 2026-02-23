@@ -923,15 +923,21 @@ function loadExistingConfig(cfg) {
     adminDrinkOptions = cfg.drinkOptions ? JSON.parse(JSON.stringify(cfg.drinkOptions)) : {};
     adminSnackOptions = cfg.snackOptions ? JSON.parse(JSON.stringify(cfg.snackOptions)) : {};
 
-    categoryEnabled.food = Object.keys(adminFoodOptions).length > 0;
-    categoryEnabled.drink = Object.keys(adminDrinkOptions).length > 0;
-    categoryEnabled.snack = Object.keys(adminSnackOptions).length > 0;
+    if (cfg.categoryEnabled) {
+        categoryEnabled.food = cfg.categoryEnabled.food;
+        categoryEnabled.drink = cfg.categoryEnabled.drink;
+        categoryEnabled.snack = cfg.categoryEnabled.snack;
+    } else {
+        categoryEnabled.food = Object.keys(adminFoodOptions).length > 0;
+        categoryEnabled.drink = Object.keys(adminDrinkOptions).length > 0;
+        categoryEnabled.snack = Object.keys(adminSnackOptions).length > 0;
+    }
 
     if (cfg.calculationRules) {
-        document.getElementById('cfgSlicesPerPerson').value = cfg.calculationRules.slicesPerPerson || 3;
-        document.getElementById('cfgSlicesPerPizza').value = cfg.calculationRules.slicesPerPizza || 8;
-        document.getElementById('cfgBuffer').value = Math.round((cfg.calculationRules.bufferPercent || 0.15) * 100);
-        document.getElementById('cfgLitersPerPerson').value = cfg.calculationRules.litersPerPerson || 1.5;
+        document.getElementById('cfgSlicesPerPerson').value = cfg.calculationRules.slicesPerPerson ?? 3;
+        document.getElementById('cfgSlicesPerPizza').value = cfg.calculationRules.slicesPerPizza ?? 8;
+        document.getElementById('cfgBuffer').value = Math.round((cfg.calculationRules.bufferPercent ?? 0.15) * 100);
+        document.getElementById('cfgLitersPerPerson').value = cfg.calculationRules.litersPerPerson ?? 1.5;
     }
 
     updateCategoryToggles();
@@ -968,10 +974,13 @@ function renderOptionList(cat, options) {
     const entries = Object.entries(options);
     list.innerHTML = entries.map(([key, opt]) => `
         <div class="editable-item">
-            <input type="text" value="${escapeHtml(opt.label)}" data-cat="${cat}" data-key="${key}" onchange="updateOptionLabel(this)">
-            <button onclick="removeOption('${cat}', '${key}')" title="Entfernen">&times;</button>
+            <input type="text" value="${escapeHtml(opt.label)}" data-cat="${cat}" data-key="${escapeHtml(key)}" onchange="updateOptionLabel(this)">
+            <button data-cat="${cat}" data-key="${escapeHtml(key)}" title="Entfernen">&times;</button>
         </div>
     `).join('');
+    list.querySelectorAll('.editable-item button').forEach(btn => {
+        btn.addEventListener('click', () => removeOption(btn.dataset.cat, btn.dataset.key));
+    });
 }
 
 function escapeHtml(str) {
@@ -1022,14 +1031,15 @@ async function saveConfig() {
         weeks: parseInt(document.getElementById('cfgWeeks').value),
         time: document.getElementById('cfgTime').value.trim() || '17:00 Uhr',
         template: selectedTemplate,
-        foodOptions: categoryEnabled.food ? adminFoodOptions : {},
-        drinkOptions: categoryEnabled.drink ? adminDrinkOptions : {},
-        snackOptions: categoryEnabled.snack ? adminSnackOptions : {},
+        categoryEnabled: { ...categoryEnabled },
+        foodOptions: adminFoodOptions,
+        drinkOptions: adminDrinkOptions,
+        snackOptions: adminSnackOptions,
         calculationRules: {
-            slicesPerPerson: parseInt(document.getElementById('cfgSlicesPerPerson').value) || 3,
-            slicesPerPizza: parseInt(document.getElementById('cfgSlicesPerPizza').value) || 8,
-            bufferPercent: (parseInt(document.getElementById('cfgBuffer').value) || 15) / 100,
-            litersPerPerson: parseFloat(document.getElementById('cfgLitersPerPerson').value) || 1.5
+            slicesPerPerson: parseInt(document.getElementById('cfgSlicesPerPerson').value) ?? 3,
+            slicesPerPizza: parseInt(document.getElementById('cfgSlicesPerPizza').value) ?? 8,
+            bufferPercent: (parseInt(document.getElementById('cfgBuffer').value) ?? 15) / 100,
+            litersPerPerson: parseFloat(document.getElementById('cfgLitersPerPerson').value) ?? 1.5
         }
     };
 
@@ -1081,9 +1091,10 @@ function renderResults() {
         return;
     }
 
-    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
-    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
-    const hasSnacks = cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
+    const ce = cfg.categoryEnabled || {};
+    const hasFood = (ce.food !== false) && cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = (ce.drink !== false) && cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+    const hasSnacks = (ce.snack !== false) && cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
     const rules = cfg.calculationRules || {};
 
     // Stats bar
@@ -1263,9 +1274,10 @@ function initUser() {
     document.getElementById('eventDescription').textContent = cfg.description || '';
     document.title = cfg.title || 'Event Organizer';
 
-    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
-    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
-    const hasSnacks = cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
+    const ce = cfg.categoryEnabled || {};
+    const hasFood = (ce.food !== false) && cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = (ce.drink !== false) && cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+    const hasSnacks = (ce.snack !== false) && cfg.snackOptions && Object.keys(cfg.snackOptions).length > 0;
 
     let infoHtml = `<strong>Uhrzeit: ${cfg.time || '17:00 Uhr'}</strong>`;
     if (hasFood) {
@@ -1429,8 +1441,9 @@ document.getElementById('pollForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const cfg = data.config;
-    const hasFood = cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
-    const hasDrinks = cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
+    const ce = cfg.categoryEnabled || {};
+    const hasFood = (ce.food !== false) && cfg.foodOptions && Object.keys(cfg.foodOptions).length > 0;
+    const hasDrinks = (ce.drink !== false) && cfg.drinkOptions && Object.keys(cfg.drinkOptions).length > 0;
 
     const name = document.getElementById('userName').value.trim();
     if (!name) { showMessage('Bitte gib deinen Namen ein.', 'error'); return; }
