@@ -27,7 +27,7 @@ jobs:
         env:
           JSONBIN_KEY: ${{ secrets.JSONBIN_API_KEY }}
         run: |
-          python3 -c "
+          python3 << 'PYEOF'
           import os
           key = os.environ['JSONBIN_KEY']
           with open('index.html', 'r') as f:
@@ -35,7 +35,7 @@ jobs:
           content = content.replace('__JSONBIN_API_KEY__', key)
           with open('index.html', 'w') as f:
               f.write(content)
-          "
+          PYEOF
 
       - uses: actions/configure-pages@v5
 
