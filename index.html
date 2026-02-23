@@ -809,7 +809,7 @@ const TEMPLATES = {
             option2: { label: 'Option 2' }
         },
         drinkOptions: {
-            option1: { label: 'Getraenk 1', litersPerSelection: 0.5 }
+            option1: { label: 'Getränk 1', litersPerSelection: 0.5 }
         },
         snackOptions: {
             option1: { label: 'Snack 1' }
@@ -1165,9 +1165,9 @@ function renderResults(skipCalcPopulate) {
 
     if (hasFood) {
         const eaters = responses.filter(r => r.food && r.food !== 'none').length;
-        const slicesPerPerson = rules.slicesPerPerson || 3;
-        const slicesPerPizza = rules.slicesPerPizza || 8;
-        const buffer = rules.bufferPercent || 0.15;
+        const slicesPerPerson = rules.slicesPerPerson ?? 3;
+        const slicesPerPizza = rules.slicesPerPizza ?? 8;
+        const buffer = rules.bufferPercent ?? 0.15;
         const totalPizzas = eaters > 0 ? Math.ceil(eaters * slicesPerPerson / slicesPerPizza * (1 + buffer)) : 0;
         statsHtml += `<div class="stat-box"><div class="stat-value">${totalPizzas}</div><div class="stat-label">Pizzen</div></div>`;
     }
@@ -1179,7 +1179,7 @@ function renderResults(skipCalcPopulate) {
                 totalLiters += (cfg.drinkOptions[d]?.litersPerSelection || 0.5);
             });
         });
-        const minTotal = responses.length * (rules.litersPerPerson || 1.5);
+        const minTotal = responses.length * (rules.litersPerPerson ?? 1.5);
         if (totalLiters < minTotal) totalLiters = minTotal;
         statsHtml += `<div class="stat-box"><div class="stat-value">${Math.ceil(totalLiters)}L</div><div class="stat-label">Getränke</div></div>`;
     }
@@ -1219,7 +1219,7 @@ function renderResults(skipCalcPopulate) {
 
         const eaters = responses.filter(r => r.food && r.food !== 'none').length;
         const totalPizzas = eaters > 0
-            ? Math.ceil(eaters * (rules.slicesPerPerson || 3) / (rules.slicesPerPizza || 8) * (1 + (rules.bufferPercent || 0.15)))
+            ? Math.ceil(eaters * (rules.slicesPerPerson ?? 3) / (rules.slicesPerPizza ?? 8) * (1 + (rules.bufferPercent ?? 0.15)))
             : 0;
 
         document.getElementById('foodResults').innerHTML = Object.entries(foodCounts)
@@ -1255,7 +1255,7 @@ function renderResults(skipCalcPopulate) {
             drinkLiters[d] = l;
             totalLiters += l;
         });
-        const minTotal = responses.length * (rules.litersPerPerson || 1.5);
+        const minTotal = responses.length * (rules.litersPerPerson ?? 1.5);
         const mult = totalLiters > 0 && totalLiters < minTotal ? minTotal / totalLiters : 1;
 
         const sorted = Object.entries(drinkCounts).sort((a, b) => b[1] - a[1]).filter(([_, c]) => c > 0);
@@ -1341,7 +1341,7 @@ function initUser() {
     let infoHtml = `<strong>Uhrzeit: ${cfg.time || '17:00 Uhr'}</strong>`;
     if (hasFood) {
         const rules = cfg.calculationRules || {};
-        infoHtml += `Richtwerte: ${rules.slicesPerPerson || 3} Stücke Pizza, ca. ${rules.litersPerPerson || 1.5}L Getränke pro Person`;
+        infoHtml += `Richtwerte: ${rules.slicesPerPerson ?? 3} Stücke Pizza, ca. ${rules.litersPerPerson ?? 1.5}L Getränke pro Person`;
     }
     document.getElementById('eventInfoBox').innerHTML = infoHtml;
 
@@ -1512,7 +1512,7 @@ document.getElementById('pollForm').addEventListener('submit', async (e) => {
     if (hasFood && !foodInput) { showMessage('Bitte wähle eine Essen-Präferenz.', 'error'); return; }
 
     const drinkInputs = document.querySelectorAll('input[name="drinks"]:checked');
-    if (hasDrinks && drinkInputs.length === 0) { showMessage('Bitte wähle mindestens ein Getraenk.', 'error'); return; }
+    if (hasDrinks && drinkInputs.length === 0) { showMessage('Bitte wähle mindestens ein Getränk.', 'error'); return; }
 
     const snackInputs = document.querySelectorAll('input[name="snacks"]:checked');
     const restrictions = document.getElementById('restrictions').value.trim();
